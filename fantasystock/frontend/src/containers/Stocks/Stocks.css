@@ -1,0 +1,4 @@
+.stockCard {
+  background-color: var(--card-color);
+  border-radius: 1rem;
+}

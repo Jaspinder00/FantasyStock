@@ -1,0 +1,31 @@
+.NavbarSettings {
+  width: 2rem;
+  height: 2rem;
+  float: right;
+  background-color: #00000000;
+  color: var(--main-font-color);
+  border-style: none;
+  border-radius: 1rem;
+  font-weight: bolder;
+  font-size: 1.25rem;
+  margin: 0 0.25rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: 0.25s;
+  animation-name: fadeIn;
+  animation-duration: 0.5s;
+  position: relative;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.NavbarSettings:hover {
+  background-color: var(--main-bg-contrast-color);
+  color: var(--main-font-contrast-color);
+}

@@ -1,0 +1,110 @@
+.NavbarSignInUpBtn {
+  font-size: 0.8rem;
+  width: 6rem;
+  height: 2rem;
+  float: right;
+  color: var(--sign-in-btn-color);
+  border-color: var(--sign-in-btn-color);
+  border-radius: 1rem;
+  font-weight: 500;
+  border-width: 1px;
+  transition: 0.25s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-style: solid;
+  text-decoration: none;
+  user-select: none;
+  animation-name: fadeIn;
+  animation-duration: 0.5s;
+  position: relative;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.NavbarSignInUpBtn:hover {
+  background-color: var(--sign-in-btn-color);
+  color: var(--main-font-contrast-color);
+}
+
+.NavbarLoggedInBtn {
+  font-size: 0.8rem;
+  width: 2rem;
+  height: 2rem;
+  float: right;
+  color: var(--sign-in-btn-color);
+  border-color: var(--main-bg-contrast-color);
+  border-radius: 100%;
+  font-weight: 500;
+  border-width: 2px;
+  transition: 0.25s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-style: solid;
+  text-decoration: none;
+  animation-name: fadeIn;
+  animation-duration: 0.5s;
+  position: relative;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+@media (max-width: 991px) {
+  .NavbarLoggedInBtn {
+    font-size: 0.8rem;
+    width: 2rem;
+    height: 2rem;
+    float: right;
+    color: var(--sign-in-btn-color);
+    border-color: var(--main-bg-contrast-color);
+    border-radius: 100%;
+    font-weight: 500;
+    border-width: 2px;
+    transition: 0.25s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-style: solid;
+    text-decoration: none;
+    animation-name: fadeIn;
+    animation-duration: 0.5s;
+    position: relative;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    margin-left: 0;
+  }
+}
+
+/* @keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100%;
+  }
+} */
+
+.NavbarSignInUpBtnText {
+  margin-left: 0.25rem;
+}

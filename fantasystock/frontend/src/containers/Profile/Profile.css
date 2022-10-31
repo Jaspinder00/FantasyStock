@@ -1,0 +1,29 @@
+.editBtn {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  margin-top: 3rem;
+}
+
+.profileTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profilePic {
+  display: inline-block;
+  border: 0.25rem solid var(--main-bg-contrast-color);
+  border-radius: 100%;
+  padding: 0.125rem;
+}
+
+.profilePic img {
+  border-radius: 100%;
+  display: flex;
+}
+
+.userIcon {
+  width: 2.5rem;
+  margin: 0 0.5rem;
+}

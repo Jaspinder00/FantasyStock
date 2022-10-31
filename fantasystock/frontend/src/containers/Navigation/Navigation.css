@@ -1,0 +1,130 @@
+.NavbarContainer {
+  background-color: var(--main-navbar-color);
+  padding: 0.5rem;
+  /*
+  display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: row;
+    flex-wrap: wrap;
+    */
+}
+
+.NavbarContainerContainer {
+  position: sticky;
+  top: 0;
+  width: 100%;
+}
+
+.VerticalNavbarContainer1 {
+  background-color: var(--main-navbar-color);
+  width: 12rem;
+  min-height: calc(100vh - 5rem);
+  padding: 0.5rem 1rem 1.5rem 0.9rem;
+  float: left;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  animation: slide-out 0.5s forwards;
+}
+.VerticalNavbarContainer2 {
+  background-color: var(--main-navbar-color);
+  width: 2.5rem;
+  min-height: calc(100vh - 5rem);
+  padding: 0.5rem 0.9rem 1.5rem 0.9rem;
+  float: left;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  animation: slide-in 0.5s forwards;
+}
+
+@keyframes slide-in {
+  0% {
+    width: 12rem;
+    filter: blur(0.1rem);
+  }
+
+  100% {
+    width: 2.5rem;
+    filter: blur(0rem);
+  }
+}
+
+@keyframes slide-out {
+  0% {
+    width: 2.5rem;
+    filter: blur(0.1rem);
+  }
+  100% {
+    width: 12rem;
+    filter: blur(0rem);
+  }
+}
+
+@media (max-width: 991px) {
+  /*medium and smaller devices*/
+  .NavbarContainer {
+    flex-wrap: wrap;
+    background-color: var(--main-navbar-color);
+    padding: 0.5rem;
+  }
+
+  .VerticalNavbarContainer1 {
+    padding: 0;
+    width: 100%;
+    position: absolute;
+    top: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    animation: slide-out 0.5s alternate;
+    min-height: calc(100vh - 3rem);
+  }
+
+  .VerticalNavbarContainer2 > * {
+    display: none;
+  }
+
+  .VerticalNavbarContainer2 {
+    position: absolute;
+    top: 3rem;
+  }
+
+  @keyframes slide-in {
+    0% {
+      width: 75%;
+      filter: blur(0.1rem);
+    }
+    99% {
+      width: 0rem;
+      filter: blur(0rem);
+    }
+    100% {
+      width: 0rem;
+      transform: translateX(-1000px);
+    }
+  }
+
+  @keyframes slide-out {
+    0% {
+      width: 0%;
+      filter: blur(0.1rem);
+    }
+    100% {
+      width: 100%;
+      filter: blur(0rem);
+    }
+  }
+
+  .NavbarForm {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .NavbarContainer {
+    flex-wrap: nowrap;
+  }
+}

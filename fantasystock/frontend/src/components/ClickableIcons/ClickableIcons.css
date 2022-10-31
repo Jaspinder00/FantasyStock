@@ -1,0 +1,136 @@
+.VerticalNavbarIcons1 {
+  padding: 0.25rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  color: var(--main-font-color);
+  font-weight: 100;
+  transition: 0.25s;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  overflow: hidden;
+}
+.VerticalNavbarIcons1:hover {
+  background-color: var(--main-bg-contrast-color);
+  color: var(--main-font-contrast-color);
+}
+.VerticalNavbarIcons1:hover .centerIcon {
+  background-color: #00000000;
+  color: var(--main-font-contrast-color);
+}
+.VerticalNavbarIcons2 {
+  padding: 0.25rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  color: var(--main-font-color);
+  font-weight: 100;
+  transition: 0.25s;
+  border-radius: 100%;
+  text-decoration: none;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+.VerticalNavbarIcons2:hover {
+  color: var(--main-font-contrast-color);
+}
+
+.centerIcon {
+  display: inline-block;
+  padding: 0.35rem;
+  margin-bottom: 0;
+  font-size: 1.25rem;
+  color: var(--main-font-color);
+  border-radius: 100%;
+  font-weight: 100;
+  transition: 0.25s;
+  border-radius: 100%;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+.centerIcon:hover {
+  background-color: var(--main-bg-contrast-color);
+  color: var(--main-font-contrast-color);
+}
+
+.hovertextright {
+  position: relative;
+}
+
+.hovertextright:before {
+  content: attr(data-hover);
+  visibility: hidden;
+  opacity: 0;
+
+  background-color: var(--floating-tab-color);
+  color: var(--main-font-color);
+  text-align: center;
+  border-radius: 5px;
+  padding: 0.5rem;
+
+  position: absolute;
+  z-index: 1;
+  left: 3.5rem;
+  top: 0;
+  font-size: 0.75rem;
+}
+
+.hovertextright:hover:before {
+  opacity: 1;
+  visibility: visible;
+}
+
+.hovertextbottom {
+  position: relative;
+}
+
+.hovertextbottom:before {
+  content: attr(data-hover);
+  visibility: hidden;
+  opacity: 0;
+
+  background-color: var(--floating-tab-color);
+  color: var(--main-font-color);
+  text-align: center;
+  border-radius: 5px;
+  padding: 0.5rem;
+
+  position: absolute;
+  z-index: 1;
+  left: -0.5rem;
+  top: 3rem;
+  font-size: 0.75rem;
+}
+
+.hovertextbottom:hover:before {
+  opacity: 1;
+  visibility: visible;
+}
+
+.createleague {
+  float: right;
+  margin: 0 1rem;
+}
+
+@media (max-width: 991px) {
+  .VerticalNavbarIcons1 {
+    min-height: 10vh;
+    font-size: 2rem;
+  }
+}

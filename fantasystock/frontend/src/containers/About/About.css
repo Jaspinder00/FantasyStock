@@ -1,0 +1,42 @@
+.teamHeader {
+  text-decoration: underline;
+  font-size: 4rem;
+}
+
+.teamSubHeader {
+  color: var(--secondary-font-color);
+  margin: 1.75rem;
+  padding: 0.5rem;
+}
+
+.teamSubHeader:hover {
+  color: var(--main-font-color);
+}
+
+.aboutPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.specialThanks {
+  height: calc(100vh - 3rem);
+}
+
+.aboutProject {
+  height: calc(100vh - 3rem);
+  width: 45rem;
+}
+
+.aboutParagraph {
+  color: var(--secondary-font-color);
+  line-height: 3rem;
+  margin: 0.5rem 0 0.5rem 0;
+  text-align: justify;
+}
+
+.aboutTitle {
+  margin-bottom: 0.5rem;
+  text-decoration: underline;
+}

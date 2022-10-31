@@ -1,0 +1,21 @@
+.NavbarHamburgerMenu {
+  width: 2rem;
+  height: 2rem;
+  float: left;
+  color: var(--main-font-color);
+  border-style: none;
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 1rem 0 0.75rem;
+  padding: 0;
+  border-radius: 100%;
+  transition: 0.25s;
+}
+
+.NavbarHamburgerMenu:hover {
+  background-color: var(--main-bg-contrast-color);
+  color: var(--main-font-contrast-color);
+}

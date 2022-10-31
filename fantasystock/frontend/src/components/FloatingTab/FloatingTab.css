@@ -1,0 +1,40 @@
+.NavbarFloatingTab {
+  position: fixed;
+  width: auto;
+  min-width: 10rem;
+  height: auto;
+  right: 1rem;
+  top: 3rem;
+  background-color: var(--floating-tab-color);
+  color: var(--main-font-color);
+  z-index: 1;
+  padding: 0;
+  border-radius: 3.125%;
+  user-select: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.NavbarFloatingTabTab {
+  display: block;
+  width: auto;
+  min-width: 10rem;
+  height: auto;
+  color: var(--main-font-color);
+  z-index: 1;
+  padding: 0.65rem 0;
+  user-select: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  text-decoration: none;
+}
+
+.NavbarFloatingTabTab:hover {
+  background-color: var(--floating-contrast-tab-color);
+}
