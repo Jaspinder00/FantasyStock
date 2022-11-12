@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import "./SearchBar.css";
@@ -11,9 +12,11 @@ function SearchBar(props) {
         placeholder="Search for a League"
         aria-label="Search"
       />
-      <button type="submit">
-        <FontAwesomeIcon icon={faMagnifyingGlass} />
-      </button>
+      <Link to="/league/search">
+        <button type="submit">
+          <FontAwesomeIcon icon={faMagnifyingGlass} />
+        </button>
+      </Link>
     </form>
   );
 }

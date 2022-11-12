@@ -11,7 +11,7 @@ function Stock(props) {
 
   useMemo((event) => {
     axios
-      .get("/getPrice")
+      .get("/price")
       .then((response) => {
         response.data.map((ele, index) =>
           setData((oldArr) => [...oldArr, ele])

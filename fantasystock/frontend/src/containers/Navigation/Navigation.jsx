@@ -7,6 +7,7 @@ import {
   faShoppingCart,
   faAddressCard,
   faEnvelope,
+  faChartColumn,
 } from "@fortawesome/free-solid-svg-icons";
 import LogoBtn from "../../components/LogoBtn/LogoBtn";
 import SearchBar from "../../components/SearchBar/SearchBar";
@@ -44,15 +45,20 @@ function Navigation(props) {
             name="League"
             design="VerticalNavbarIcons1"
           />
-
           <ClickableIcons
-            to="/"
+            to="/stocks"
+            icon={faChartColumn}
+            design="VerticalNavbarIcons1"
+            name="Prices"
+          />
+          <ClickableIcons
+            to="/friends"
             icon={faUserGroup}
             name="Friends"
             design="VerticalNavbarIcons1"
           />
           <ClickableIcons
-            to="/"
+            to="/store"
             icon={faShoppingCart}
             name="Store"
             design="VerticalNavbarIcons1"
@@ -64,7 +70,7 @@ function Navigation(props) {
             design="VerticalNavbarIcons1"
           />
           <ClickableIcons
-            to="/"
+            to="/messagecenter"
             icon={faEnvelope}
             name="Messages"
             design="VerticalNavbarIcons1"
@@ -86,14 +92,21 @@ function Navigation(props) {
             hoverDesign="hovertextright"
           />
           <ClickableIcons
-            to="/stocks"
+            to="/league"
             icon={faFootball}
             design="VerticalNavbarIcons2"
             hoverName="League"
             hoverDesign="hovertextright"
           />
           <ClickableIcons
-            to="/"
+            to="/stocks"
+            icon={faChartColumn}
+            design="VerticalNavbarIcons2"
+            hoverName="Prices"
+            hoverDesign="hovertextright"
+          />
+          <ClickableIcons
+            to="/friends"
             icon={faUserGroup}
             design="VerticalNavbarIcons2"
             hoverName="Friends"
@@ -101,7 +114,7 @@ function Navigation(props) {
           />
 
           <ClickableIcons
-            to="/"
+            to="/store"
             icon={faShoppingCart}
             design="VerticalNavbarIcons2"
             hoverName="Store"
@@ -115,7 +128,7 @@ function Navigation(props) {
             hoverDesign="hovertextright"
           />
           <ClickableIcons
-            to="/"
+            to="/messagecenter"
             icon={faEnvelope}
             design="VerticalNavbarIcons2"
             hoverName="Messages"

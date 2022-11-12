@@ -11,19 +11,62 @@ const LeagueSchema = new Schema(
       ref: "User",
       required: true,
     },
-    players: {
-      type: [
-        {
+    title: { type: String, required: true },
+    players: [
+      {
+        type: {
           player: { type: Schema.Types.ObjectId, ref: "User", unqiue: true },
-          stocks: [{ type: Schema.Types.ObjectId, ref: "Stock" }],
+          stocks: [
+            {
+              ticker: { type: String },
+              quantity: { type: Number },
+              position: {
+                type: String,
+                enum: ["long", "short"],
+                default: "long",
+              },
+            },
+          ],
         },
-      ],
+      },
+    ],
+    visibility: {
+      type: String,
+      enum: ["public", "private"],
+      default: "public",
     },
-    public: { type: Boolean, default: true },
+    start: { type: Date, required: true },
+    end: { type: Date, required: true },
+    commentsection: [
+      {
+        comment: {
+          type: String,
+        },
+        owner: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
+        likes: { type: Number, default: 0 },
+        dislikes: { type: Number, default: 0 },
+        replies: [
+          {
+            reply: {
+              type: String,
+            },
+            replyowner: {
+              type: Schema.Types.ObjectId,
+              ref: "User",
+            },
+            replylikes: { type: Number, default: 0 },
+            replydislikes: { type: Number, default: 0 },
+          },
+        ],
+      },
+    ],
   },
   { timestamps: true }
 );
 
 LeagueSchema.plugin(findorCreate);
 
-module.exports = mongoose.model("Comment", LeagueSchema);
+module.exports = mongoose.model("League", LeagueSchema);

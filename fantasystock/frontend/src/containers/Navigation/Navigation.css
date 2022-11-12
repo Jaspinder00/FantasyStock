@@ -39,7 +39,7 @@
   animation: slide-in 0.5s forwards;
 }
 
-@keyframes slide-in {
+/* @keyframes slide-in {
   0% {
     width: 12rem;
     filter: blur(0.1rem);
@@ -60,7 +60,7 @@
     width: 12rem;
     filter: blur(0rem);
   }
-}
+} */
 
 @media (max-width: 991px) {
   /*medium and smaller devices*/
@@ -90,9 +90,10 @@
   .VerticalNavbarContainer2 {
     position: absolute;
     top: 3rem;
+    transform: translateX(-1000px);
   }
 
-  @keyframes slide-in {
+  /* @keyframes slide-in {
     0% {
       width: 75%;
       filter: blur(0.1rem);
@@ -105,9 +106,9 @@
       width: 0rem;
       transform: translateX(-1000px);
     }
-  }
+  } */
 
-  @keyframes slide-out {
+  /* @keyframes slide-out {
     0% {
       width: 0%;
       filter: blur(0.1rem);
@@ -116,7 +117,7 @@
       width: 100%;
       filter: blur(0rem);
     }
-  }
+  } */
 
   .NavbarForm {
     width: 100%;

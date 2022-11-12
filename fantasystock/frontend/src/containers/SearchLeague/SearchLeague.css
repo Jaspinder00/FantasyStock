@@ -1,0 +1,24 @@
+.searchResult {
+  background-color: var(--floating-contrast-tab-color);
+  padding: 0.5rem 1rem;
+  margin: 1rem;
+  border-radius: 0.5rem;
+  display: block;
+  color: var(--main-font-color);
+  text-decoration: none;
+}
+.searchResult:hover {
+  background-color: var(--floating-tab-color);
+}
+
+.searchResultTitle {
+  font-size: 2rem;
+}
+
+.searchResultHost {
+  font-size: 1rem;
+}
+
+.searchResultContainer {
+  width: 50%;
+}

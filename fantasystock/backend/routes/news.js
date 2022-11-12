@@ -1,13 +1,11 @@
 const express = require("express");
 const router = express.Router();
-var request = require("request");
-
 require("dotenv").config();
-const Stocks = require("../models/stock");
+const News = require("../models/news");
 
 router.get("/", async (req, res) => {
-  const aStocks = await Stocks.find({});
-  res.send(aStocks);
+  const aNews = await News.find({});
+  res.send(aNews);
 });
 
 module.exports = router;

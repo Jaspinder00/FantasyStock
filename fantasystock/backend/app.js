@@ -7,9 +7,12 @@ const app = express();
 const session = require("express-session");
 const passport = require("passport");
 const schedule = require("node-schedule");
-const GetPrice = require("./routes/getPrice");
+const Price = require("./routes/price");
+const News = require("./routes/news");
+const League = require("./routes/leagues");
 const userRoutes = require("./routes/users");
 const createOrUpdateStocks = require("./utils/createOrUpdateStock");
+const updateNews = require("./utils/updateNews");
 const MongoDBStore = require("connect-mongo");
 
 mongoose.connect(process.env.DB_HOST, {
@@ -51,7 +54,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/register", userRoutes);
-app.use("/getPrice", GetPrice);
+app.use("/price", Price);
+app.use("/news", News);
+app.use("/league", League);
 
 app.get("/", (req, res) => res.send("Hi"));
 
@@ -61,4 +66,5 @@ app.listen(process.env.PORT, () =>
 
 schedule.scheduleJob("0 */4 * * *", function () {
   createOrUpdateStocks();
+  updateNews();
 });

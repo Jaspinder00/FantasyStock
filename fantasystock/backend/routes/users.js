@@ -3,6 +3,7 @@ const User = require("../models/user");
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
+const { findById } = require("../models/stock");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
 function isLoggedIn(req, res, next) {
@@ -124,10 +125,53 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
   }
 });
 
-router.get("/:id", (req, res) => {
-  User.findById(req.params.id, (err, docs) =>
-    err ? console.log(err) : console.log(result)
+router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
+  if (req.body.friendcode.length <= 32) {
+    try {
+      console.log(req.user._id);
+      console.log(req.body.friendcode);
+      const user = await User.findById(req.user._id);
+      const friend = await User.findById(req.body.friendcode);
+      console.log(user);
+      console.log(friend);
+
+      friend && user.friends.push(friend);
+      user.save();
+    } catch {}
+  }
+});
+
+router.get("/friends", async (req, res) => {
+  const user = await User.findById(req.user._id);
+  const allFriends = [];
+
+  await Promise.all(
+    user.friends.map(async (ele) => {
+      const tmp = await User.findById(ele);
+      allFriends.push(tmp);
+    })
   );
+
+  res.send(allFriends);
+});
+
+router.get("/:id", async (req, res) => {
+  const aUser = await User.findById(req.params.id);
+  const theUser = await User.findById(req.user._id);
+
+  const isFriend = theUser.friends.reduce(
+    (acc, ele) => acc || ele.toString() === req.params.id,
+    false
+  );
+
+  const ans = {
+    _id: aUser._id,
+    username: aUser.username,
+    photo: aUser.photo,
+    bio: aUser.bio,
+  };
+
+  res.send(ans);
 });
 
 module.exports = router;

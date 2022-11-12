@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const findorCreate = require("mongoose-findorcreate");
+const League = require("./league");
 
 const UserSchema = new Schema({
   googleId: {
@@ -14,8 +15,10 @@ const UserSchema = new Schema({
   givenName: { type: String, default: "" },
   photo: { type: String, default: "" },
   bio: { type: String, default: "Hello, World!" },
-  friends: [this],
+  friends: [{ type: mongoose.Types.ObjectId, ref: "User" }],
   currency: { type: Number, default: 0 },
+  activeLeagues: [{ type: mongoose.Types.ObjectId, ref: "League" }],
+  passedLeagues: [{ type: mongoose.Types.ObjectId, ref: "League" }],
 });
 
 UserSchema.plugin(findorCreate);

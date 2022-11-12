@@ -4,7 +4,7 @@
   font-size: 1.25rem;
   color: var(--main-font-color);
   font-weight: 100;
-  transition: 0.25s;
+  /* transition: 0.25s; */
   border-radius: 0.5rem;
   text-decoration: none;
   display: flex;
@@ -31,7 +31,7 @@
   font-size: 1.25rem;
   color: var(--main-font-color);
   font-weight: 100;
-  transition: 0.25s;
+  /* transition: 0.25s; */
   border-radius: 100%;
   text-decoration: none;
   display: block;
@@ -54,7 +54,7 @@
   color: var(--main-font-color);
   border-radius: 100%;
   font-weight: 100;
-  transition: 0.25s;
+  /* transition: 0.25s; */
   border-radius: 100%;
   text-decoration: none;
   user-select: none;

@@ -16,7 +16,7 @@ function LoginSet(props) {
         <LoggedInBtn onClick={() => dispatch(fTabToggler())} />
         {fTabToggle && <FloatingTab />}
         <ClickableIcons
-          to="/"
+          to="/league/create"
           icon={faPlus}
           design="createleague"
           hoverName="Create League"

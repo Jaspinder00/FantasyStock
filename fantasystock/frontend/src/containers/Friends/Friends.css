@@ -1,0 +1,56 @@
+.friendblock {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  margin: 1rem;
+  padding: 1rem;
+  border: 0.2rem solid black;
+  border-radius: 1rem;
+  background-color: rgb(0, 0, 0, 0.125);
+}
+
+.unfriendfriend {
+  margin: 0.25rem 0.5rem 0.25rem 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background-color: hsl(0, 100%, 45%);
+  color: white;
+}
+
+.unfriendfriend:hover {
+  background-color: hsl(0, 100%, 50%);
+}
+
+.msgfriend {
+  margin: 0.25rem 0.5rem 0.25rem 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background-color: hsl(120, 49%, 45%);
+  color: white;
+}
+.msgfriend:hover {
+  background-color: hsl(120, 49%, 50%);
+}
+
+.friendusername {
+  margin: 1rem;
+}
+
+.friendbaradderbtn {
+  margin: 0;
+  border-radius: 0 0.25rem 0.25rem 0;
+  padding: 0.5rem;
+  border-width: 0;
+}
+
+.friendadderbar {
+  margin: 2rem 0 2rem 2rem;
+  border-radius: 0.25rem 0 0 0.25rem;
+  padding: 0.5rem;
+  width: 15rem;
+  border-width: 0;
+}
+
+.friendadderbar:focus {
+  outline: none;
+}

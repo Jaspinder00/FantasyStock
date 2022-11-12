@@ -49,24 +49,6 @@
   background-color: var(--search-btn-contrast-color);
 }
 
-@keyframes searchbarGrow {
-  0% {
-    width: 24rem;
-  }
-  100% {
-    width: 28rem;
-  }
-}
-
-@keyframes searchbarShrink {
-  0% {
-    width: 28rem;
-  }
-  100% {
-    width: 24rem;
-  }
-}
-
 @media (max-width: 991px) {
   .NavbarForm input {
     width: 80%;
