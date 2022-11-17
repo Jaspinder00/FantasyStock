@@ -6,7 +6,6 @@ const bodyParser = require("body-parser");
 var jsonParser = bodyParser.json();
 require("dotenv").config();
 
-
 router.patch("/buy", jsonParser, async (req, res) => {
   // host is the current user
   const host = await User.findById({ _id: req.user._id });
@@ -20,14 +19,17 @@ router.patch("/buy", jsonParser, async (req, res) => {
   //console.log(host.icons.includes(itemThing.name));
 
   // data validation on example: { item: 'amazon' }
-  if(req.body.item === undefined ||         // item name trying to be bought is undefined
-     typeof req.body.item !== "string" ||   // item name trying to be bought is not type string
-     itemThing.name === undefined ||        // item name is not in the inventory (item does not exist)
-     host.currency < itemThing.price ||     // user balance is less than item price
-     !owns ||                               // item is not in the inventory.js
-     host.icons.includes(itemThing.name))   // user already owns the item
-  {
+  if (
+    req.body.item === undefined || // item name trying to be bought is undefined
+    typeof req.body.item !== "string" || // item name trying to be bought is not type string
+    itemThing.name === undefined || // item name is not in the inventory (item does not exist)
+    host.currency < itemThing.price || // user balance is less than item price
+    !owns || // item is not in the inventory.js
+    host.icons.includes(itemThing.name)
+  ) {
+    // user already owns the item
     console.log("Could not buy item");
+    res.send({ created: false });
     return;
   }
 
@@ -38,10 +40,8 @@ router.patch("/buy", jsonParser, async (req, res) => {
   host.save();
 });
 
-
 router.get("/", async (req, res) => {
   res.send(Inventory);
 });
-
 
 module.exports = router;

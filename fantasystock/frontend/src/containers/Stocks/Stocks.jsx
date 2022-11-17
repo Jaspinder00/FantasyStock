@@ -29,14 +29,14 @@ function Stock(props) {
   return (
     <div>
       {
-        <div>
+        <div id="StockPrices">
           {show
             ? data.map((ele, index) => (
                 <div className="stockCard" key={`uniqueId${index}`}>
                   <h1>{String(ele.ticker)}</h1>
-                  <h2>{String(ele.name)}</h2>
-                  <h2>{String(ele.sector)}</h2>
-                  <h2>{String(ele.price)}</h2>
+                  <h2 className="StockPriceName">{String(ele.name)}</h2>
+                  <h2 className="StockPriceSector">{String(ele.sector)}</h2>
+                  <h2 className="StockPricePrice">{String(ele.price)}</h2>
                 </div>
               ))
             : skeleArr.map((ele, index) => (

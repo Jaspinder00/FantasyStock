@@ -19,6 +19,27 @@ function Home() {
   const navigate = useNavigate();
 
   const createLeague = () => {
+    const rightnow = new Date();
+    const start1 = new Date(start);
+    const end1 = new Date(end);
+
+    if (
+      title === undefined ||
+      typeof title !== "string" ||
+      stkList.length === 0 ||
+      (visibility.toLowerCase() !== "public" &&
+        visibility.toLowerCase() !== "private") ||
+      start === undefined ||
+      typeof start !== "string" ||
+      end === undefined ||
+      typeof end !== "string" ||
+      start1 <= rightnow ||
+      start1 >= end1
+    ) {
+      console.log("fill everything out");
+
+      return;
+    }
     axios
       .post("/league/create", {
         start,

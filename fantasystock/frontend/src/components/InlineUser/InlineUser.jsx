@@ -43,13 +43,13 @@ function InlineUser(props) {
       .get(`/register/${props.user}`)
       .then((response) => {
         setData({
-          displayName: response.data.displayName,
-          photo: response.data.photo,
-          id: `#${response.data._id}`,
-          bio: response.data.bio,
-          username: response.data.username,
-          activeIcon: response.data.activeIcon,
-          icons: response.data.icons,
+          displayName: response.data._doc.displayName,
+          photo: response.data._doc.photo,
+          id: `#${response.data._doc._id}`,
+          bio: response.data._doc.bio,
+          username: response.data._doc.username,
+          activeIcon: response.data._doc.activeIcon,
+          icons: response.data._doc.icons,
         });
         setShow(true);
       })

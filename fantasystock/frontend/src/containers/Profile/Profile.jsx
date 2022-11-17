@@ -146,15 +146,15 @@ function Profile(props) {
             </form>
           ) : (
             <div>
-              <h1 className="profileTitle">
+              <h1 id="profileTitle">
                 {
                   iconCollection.find((ele) => ele.name === data.activeIcon)
                     .item
                 }
                 {data.username}
               </h1>
-              <h3 className="profileIDstring">{data.id}</h3>
-              <p className="profileBio">{data.bio}</p>
+              <h3 id="profileIDstring">{data.id}</h3>
+              <p id="profileBio">{data.bio}</p>
             </div>
           )}
         </div>

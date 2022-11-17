@@ -38,7 +38,10 @@ function User(props) {
     axios
       .get(`/register/${id}`)
       .then((response) => {
-        setUser(response.data);
+        if (!response.data.success) {
+          navigate(`/friends`);
+        }
+        setUser(response.data._doc);
         setShow(true);
       })
       .catch((error) => {

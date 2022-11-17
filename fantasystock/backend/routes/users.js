@@ -119,6 +119,7 @@ router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
   ) {
     // activeIcon requested to switch must be owned by user already
     console.log("Edit failed due to input errors");
+    res.send({ created: false });
     return;
   }
 
@@ -136,6 +137,8 @@ router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
       }
     );
   }
+  res.send({ created: false });
+  return;
 });
 
 router.delete("/delete", isLoggedIn, async (req, res) => {
@@ -145,6 +148,7 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
         req.logout(function (err) {
           if (err) {
             console.log(err);
+            res.send({ created: false });
             return;
           }
           return res.redirect("/");
@@ -154,6 +158,8 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+  res.send({ created: false });
+  return;
 });
 
 router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
@@ -162,48 +168,85 @@ router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
     req.body.friendcode === undefined || // friendcode must be defined
     req.body.friendcode.length > 32 || // friendcode input must be 32 chars or less
     typeof req.body.friendcode !== "string" || // friendcode input must be a string
-    req.body.friendcode === req.user._id // user can not add him/herself as a friend
+    req.body.friendcode === req.user._id
   ) {
+    // user can not add him/herself as a friend
     console.log("Invalid friend code");
+    res.send({ created: false });
     return;
   }
 
-  if (req.body.friendcode.length <= 32) {
-    try {
-      console.log(req.user._id);
-      console.log(req.body.friendcode);
-      const user = await User.findById(req.user._id);
-      const friend = await User.findById(req.body.friendcode);
-      console.log(user);
-      console.log(friend);
-
-      friend.friendRequests.push(user);
-      friend.save();
-    } catch {}
+  // more input data validation
+  const friend = await User.findById(req.body.friendcode);
+  if (friend.friendRequests.includes(req.user._id)) {
+    console.log("You have already sent this user a friend request.");
+    res.send({ created: false });
+    return;
   }
+  if (friend.friends.includes(req.user._id)) {
+    console.log("This user is already your friend.");
+    res.send({ created: false });
+    return;
+  }
+
+  // data validation is successful
+  try {
+    //console.log(req.user._id);
+    //console.log(req.body.friendcode);
+    const user = await User.findById(req.user._id);
+    const friend = await User.findById(req.body.friendcode);
+    //console.log(user);
+    //console.log(friend);
+
+    friend.friendRequests.push(user);
+    friend.save();
+
+    console.log("friend request sent");
+  } catch {}
 });
 
 router.patch("/deletefriend", isLoggedIn, jsonParser, async (req, res) => {
-  if (req.body.friendcode.length <= 32) {
-    try {
-      const user = await User.findById(req.user._id);
+  // input data validation
+  if (
+    req.body.friendcode === undefined || // friendcode must be defined
+    req.body.friendcode.length > 32 || // friendcode input must be 32 chars or less
+    typeof req.body.friendcode !== "string" || // friendcode input must be a string
+    req.body.friendcode === req.user._id
+  ) {
+    // user can not delete him/herself as a friend
+    console.log("Invalid friend code");
+    res.send({ created: false });
+    return;
+  }
 
-      console.log(req.body.friendcode);
-      console.log(
-        user.friends.filter((ele) => ele.toString() !== req.body.friendcode)
-      );
+  // data validation is successful
+  try {
+    const user = await User.findById(req.user._id);
+    const friend = await User.findById(req.body.friendcode);
 
-      user.friends = user.friends.filter(
-        (ele) => ele.toString() !== req.body.friendcode
-      );
-      user.save();
-      res.send({ success: true });
-      return;
-    } catch (err) {
-      console.log(err);
-      res.send({ success: false });
-      return;
-    }
+    // console.log(req.body.friendcode);
+
+    console.log(
+      user.friends.filter((ele) => ele.toString() !== req.body.friendcode)
+    );
+
+    // deleting user's friend
+    user.friends = user.friends.filter(
+      (ele) => ele.toString() !== req.body.friendcode
+    );
+    user.save();
+    // deleting friend's friend
+    friend.friends = friend.friends.filter(
+      (ele) => ele.toString() !== req.user._id
+    );
+    friend.save();
+
+    res.send({ success: true });
+    return;
+  } catch (err) {
+    console.log(err);
+    res.send({ success: false });
+    return;
   }
   res.send({ success: false });
   return;
@@ -327,6 +370,7 @@ router.patch("/friend/request/decline", jsonParser, async (req, res) => {
     req.body.friendcode.length > 32 // friendcode must be 32 or less chars
   ) {
     console.log("Could not accept friend request.");
+    res.send({ created: false });
     return;
   }
 
@@ -356,22 +400,27 @@ router.patch("/friend/request/decline", jsonParser, async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  const aUser = await User.findById(req.params.id);
-  const theUser = await User.findById(req.user._id);
+  try {
+    const aUser = await User.findById(req.params.id);
+    const theUser = await User.findById(req.user._id);
+    if (aUser === null || theUser === null) {
+      res.send({ success: false });
+      return;
+    }
 
-  const isFriend = theUser.friends.reduce(
-    (acc, ele) => acc || ele.toString() === req.params.id,
-    false
-  );
+    const isFriend = theUser.friends.reduce(
+      (acc, ele) => acc || ele.toString() === req.params.id,
+      false
+    );
 
-  // const ans = {
-  //   _id: aUser._id,
-  //   username: aUser.username,
-  //   photo: aUser.photo,
-  //   bio: aUser.bio,
-  // };
+    // console.log({ ...aUser, success: true });
 
-  res.send(aUser);
+    res.send({ ...aUser, success: true });
+  } catch (e) {
+    console.log(e);
+    res.send({ success: false });
+    return;
+  }
 });
 
 module.exports = router;

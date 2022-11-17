@@ -1,4 +1,36 @@
+#StockPrices {
+  display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: flex-start;
+    justify-content: center;
+    align-items: flex-start;
+}
+
 .stockCard {
   background-color: var(--card-color);
   border-radius: 1rem;
+  margin: 1rem;
+  padding: 0.5rem;
+  width: 13rem;
+}
+
+.stockCard h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.StockPriceName {
+  font-size: 1.25rem;
+  padding:0.25rem;
+}
+
+.StockPriceSector {
+  font-size: 0.75rem;
+  padding:0.5rem;
+  font-style: italic;
+}
+
+.StockPricePrice {
+  font-size: 1.5rem;
 }

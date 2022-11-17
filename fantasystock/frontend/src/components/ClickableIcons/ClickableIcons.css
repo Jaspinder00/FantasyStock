@@ -127,7 +127,7 @@
 
 @media (max-width: 991px) {
   .VerticalNavbarIcons1 {
-    min-height: 10vh;
-    font-size: 2rem;
+    min-height: 8vh;
+    font-size: 1.5rem;
   }
 }

@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import InlineUser from "../../components/InlineUser/InlineUser";
-import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./League.css";
+import { useNavigate } from "react-router-dom";
 
 function League() {
+  const navigate = useNavigate();
+
   const [stk, setStk] = useState("");
   const [qnt, setQnt] = useState(1);
   const [pos, setPos] = useState("Long");
@@ -57,8 +59,11 @@ function League() {
     axios
       .get(`/league/${id}`)
       .then((response) => {
+        if (!response.data.success) {
+          console.log(response.data);
+          navigate(`/league`);
+        }
         setShow(true);
-        console.log(response.data);
         let startDate = new Date(response.data.start);
         startDate = `${
           startDate.getUTCMonth() + 1
@@ -84,7 +89,7 @@ function League() {
           new Array(response.data.commentsection.length).fill(false, 0)
         );
         setEditComment(
-          new Array(response.data.commentsection.length).fill("", 0)
+          response.data.commentsection.reverse().map((ele) => ele.comment)
         );
         setReply(new Array(response.data.commentsection.length).fill("", 0));
 
@@ -108,19 +113,26 @@ function League() {
   }, []);
 
   const joinLeague = () => {
-    axios.patch("/league/join", {
-      stocks: stkList.map((aStock) => {
-        return {
-          stock: aStock.stock,
-          quantity: aStock.quantity,
-          position: aStock.position.toLowerCase(),
-        };
-      }),
-      gameID: id,
-    });
+    axios
+      .patch("/league/join", {
+        stocks: stkList.map((aStock) => {
+          return {
+            stock: aStock.stock,
+            quantity: aStock.quantity,
+            position: aStock.position.toLowerCase(),
+          };
+        }),
+        gameID: id,
+      })
+      .then((res) => {
+        updateData();
+      })
+      .catch((e) => console.log(e));
   };
 
   const postComment = () => {
+    if (comment === "") return;
+
     axios.patch("/league/comment", { gameID: id, comment }).then((e) => {
       updateData();
       setComment("");
@@ -281,11 +293,12 @@ function League() {
                 <div className="LeagueCommentData">{data.comment}</div>
 
                 {data.isOwner && (
-                  <span>
+                  <span className="CommentEditBox">
                     {editableComment[index] && (
-                      <div>
+                      <div className="LeagueCommentEdit">
                         <textarea
                           onChange={(e) => {
+                            editComment[index] = data.comment;
                             const tmpThing = editComment;
                             tmpThing[index] = e.target.value;
                             setEditComment([...tmpThing]);
@@ -294,45 +307,45 @@ function League() {
                         />
                         <input
                           type="button"
-                          value="Post Edit"
-                          onClick={() =>
-                            axios.patch("/league/comment/edit", {
-                              gameID: id,
-                              commentID: data.commentID,
-                              comment: editComment[index],
-                            })
-                          }
+                          value="Edit Comment"
+                          onClick={() => {
+                            if (editComment[index] === "") return;
+
+                            axios
+                              .patch("/league/comment/edit", {
+                                gameID: id,
+                                commentID: data.commentID,
+                                comment: editComment[index],
+                              })
+                              .then((e) => {
+                                updateData();
+                              });
+                          }}
                         />
                       </div>
                     )}
-                    <input
-                      type="button"
-                      value="Edit"
-                      onClick={() => {
-                        const tmpThing = editableComment;
-                        tmpThing[index] = !tmpThing[index];
-                        setEditableComment([...tmpThing]);
-                      }}
-                    />
-                    <input
-                      type="button"
-                      value="Delete"
-                      onClick={() =>
-                        axios
-                          .patch("/league/comment/delete", {
-                            gameID: id,
-                            commentID: data.commentID,
-                          })
-                          .then((e) => {
-                            updateData();
-                          })
-                      }
-                    />
-                    <div>
-                      <FontAwesomeIcon icon={faEdit} className="commentIcon" />
-                    </div>
-                    <div>
-                      <FontAwesomeIcon icon={faTrash} className="commentIcon" />
+                    <div className="CommentUpdateButtonBox">
+                      <input
+                        type="button"
+                        value="Edit"
+                        onClick={() => {
+                          const tmpThing = editableComment;
+                          tmpThing[index] = !tmpThing[index];
+                          setEditableComment([...tmpThing]);
+                        }}
+                      />
+                      <input
+                        type="button"
+                        value="Delete"
+                        onClick={() =>
+                          axios
+                            .patch("/league/comment/delete", {
+                              gameID: id,
+                              commentID: data.commentID,
+                            })
+                            .then((e) => updateData())
+                        }
+                      />
                     </div>
                   </span>
                 )}
@@ -358,14 +371,6 @@ function League() {
                           <span>
                             {editableComment[index] && (
                               <div>
-                                <textarea
-                                  onChange={(e) => {
-                                    const tmpThing = editComment;
-                                    tmpThing[index] = e.target.value;
-                                    setEditComment([...tmpThing]);
-                                  }}
-                                  value={editComment[index]}
-                                />
                                 <input
                                   type="button"
                                   value="Post Edit"
@@ -399,6 +404,8 @@ function League() {
                     type="button"
                     value="Post Reply"
                     onClick={() => {
+                      if (reply[index] === "") return;
+
                       axios
                         .patch("/league/comment/reply", {
                           gameID: id,

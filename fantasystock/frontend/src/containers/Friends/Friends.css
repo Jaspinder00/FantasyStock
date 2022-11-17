@@ -4,7 +4,7 @@
   align-content: center;
   margin: 1rem;
   padding: 1rem;
-  border: 0.2rem solid black;
+  border: 0;
   border-radius: 1rem;
   background-color: rgb(0, 0, 0, 0.125);
 }
@@ -13,23 +13,27 @@
   margin: 0.25rem 0.5rem 0.25rem 1rem;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
+  border: none;
   background-color: hsl(0, 100%, 45%);
   color: white;
 }
 
 .unfriendfriend:hover {
   background-color: hsl(0, 100%, 50%);
+  transform: scale(1.1);
 }
 
 .msgfriend {
   margin: 0.25rem 0.5rem 0.25rem 1rem;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
+  border: none;
   background-color: hsl(120, 49%, 45%);
   color: white;
 }
 .msgfriend:hover {
   background-color: hsl(120, 49%, 50%);
+  transform: scale(1.1);
 }
 
 .friendusername {

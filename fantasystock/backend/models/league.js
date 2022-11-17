@@ -15,7 +15,7 @@ const LeagueSchema = new Schema(
     players: [
       {
         type: {
-          player: { type: Schema.Types.ObjectId, ref: "User", unqiue: true },
+          player: { type: Schema.Types.ObjectId, ref: "User" },
           stocks: [
             {
               ticker: { type: String },

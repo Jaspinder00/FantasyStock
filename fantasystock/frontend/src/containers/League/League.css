@@ -20,7 +20,8 @@
 }
 
 .leagueUserCardStocks h4 {
-  margin: 0;
+  margin: 0 0 0.5rem 0;
+  font-weight: bold;
 }
 
 .LeagueDeets {
@@ -69,7 +70,7 @@
   background-color: var(--league-comment-reply-color);
 }
 
-.LeagueCreateCommentReply {
+.LeagueCreateCommentReply, .LeagueCommentEdit {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -78,18 +79,20 @@
   width: 50%;
 }
 
-.LeagueCreateCommentReply textarea {
+.LeagueCreateCommentReply textarea, .LeagueCommentEdit textarea {
   width: 75%;
   margin: 0.25rem;
   border-radius: 0.25rem;
   padding: 0.5rem;
 }
 
-.LeagueCreateCommentReply input[type="button"] {
+.LeagueCreateCommentReply input[type="button"], .LeagueCommentEdit input[type="button"]  {
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
   background-color: var(--search-btn-color);
 }
+
+
 
 .LeagueComment {
   background-color: var(--main-card-color);
@@ -108,30 +111,37 @@
 .LeagueCommentData {
   font-size: 1rem;
   padding: 0 1rem;
+  margin: 0.5rem;
 }
 
-.LeagueComment > span > input[value="Edit"],
-.LeagueCommentReply > span > input[value="Edit"] {
+.CommentEditBox {
+  width:100%;
+  display: flex;
+  flex-flow: ;
+}
+
+.CommentUpdateButtonBox > input[value="Edit"],
+.CommentUpdateButtonBox > input[value="Edit"] {
   border-radius: 1rem 0 0 1rem;
   padding: 0.25rem 0.5rem 0.25rem 1rem;
   border: 0;
   margin: 0 0.15rem 0 0;
 }
 
-.LeagueComment > span > input[value="Delete"],
-.LeagueCommentReply > span > input[value="Delete"] {
+.CommentUpdateButtonBox > input[value="Delete"],
+.CommentUpdateButtonBox > input[value="Delete"] {
   border-radius: 0 1rem 1rem 0;
   padding: 0.25rem 1rem 0.25rem 0.5rem;
   border: 0;
   margin: 0 0.15rem 0 0;
 }
 
-.LeagueComment > span > input[value="Edit"]:hover,
-.LeagueCommentReply > span > input[value="Edit"]:hover {
+.CommentUpdateButtonBox > input[value="Edit"]:hover,
+.CommentUpdateButtonBox > input[value="Edit"]:hover {
   background-color: var(--search-btn-color);
 }
-.LeagueComment > span > input[value="Delete"]:hover,
-.LeagueCommentReply > span > input[value="Delete"]:hover {
+.CommentUpdateButtonBox > input[value="Delete"]:hover,
+.CommentUpdateButtonBox > input[value="Delete"]:hover {
   background-color: var(--del-btn-color);
 }
 
@@ -266,6 +276,7 @@
 
 #JoinLeagueBtn input[type="button"]:hover {
   background-color: rgb(130, 230, 130);
+  transform: scale(1.1);
 }
 
 .pl {

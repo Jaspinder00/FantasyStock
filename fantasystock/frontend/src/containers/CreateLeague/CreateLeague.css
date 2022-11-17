@@ -29,6 +29,7 @@
 
 #CLcreate input[type="button"]:hover {
 	background-color: rgb(130, 230, 130);
+	transform: scale(1.1);
 }
 
 .dark #CLcreate input[type="button"] {
