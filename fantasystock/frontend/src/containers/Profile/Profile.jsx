@@ -102,20 +102,24 @@ function Profile(props) {
           </div>
           {editable ? (
             <form id="editProfile">
+            <span id="namelmt">Edit Name (32 characters max)</span>
               <div id="editProfileName">
                 <input
                   type="textbox"
                   placeholder="Username"
+                  maxlength="32"
                   onChange={editUsername}
                   text={data.username}
                   value={data.username}
                 />
               </div>
+              <span id="biolmt">Edit Bio (300 characters max)</span>
               <div id="editProfileBio">
                 <textarea
                   rows="4"
                   cols="50"
-                  placeholder="Bio"
+                  placeholder="Bio" 
+                  maxlength="300"
                   onChange={editBio}
                   text={data.bio}
                   value={data.bio}
@@ -153,7 +157,7 @@ function Profile(props) {
                 }
                 {data.username}
               </h1>
-              <h3 id="profileIDstring">{data.id}</h3>
+              <h3 id="profileIDstring">ID: {data.id}</h3>
               <p id="profileBio">{data.bio}</p>
             </div>
           )}

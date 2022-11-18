@@ -1,7 +1,13 @@
 .userTitle {
-  display: flex;
+   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 2rem;
+  margin: 1rem;
+  font-weight: bold;
+  background-color: hsla(0, 0%, 50%, 0.5);
+  border-radius: 1rem;
+  padding:0.25rem 2rem;
 }
 
 .userPic {
@@ -24,16 +30,26 @@
 
 .userIDstring {
   font-size: 1rem;
-  margin: 0;
+  margin: 1rem;
 }
 
 .addFriendBtn {
   border-radius: 0.5rem;
   padding: 0.5rem 1.5rem;
   border: none;
+  margin: 1rem;
 
 }
 
 .addFriendBtn:hover {
   background-color: rgb(30, 230, 130);
+}
+
+.userBio {
+  background-color: var(--main-navbar-color);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  max-width: 80vw;
+  word-wrap: break-word;
+  white-space: normal;
 }

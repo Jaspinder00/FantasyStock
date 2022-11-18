@@ -12,10 +12,18 @@
   margin: 0 1rem 0 0.75rem;
   padding: 0;
   border-radius: 100%;
-  transition: 0.25s;
+  /* transition: 0.25s; */
 }
 
-.NavbarHamburgerMenu:hover {
+/* .NavbarHamburgerMenu:hover {
   background-color: var(--main-bg-contrast-color);
   color: var(--main-font-contrast-color);
+} */
+
+.NavbarHamburgerMenu:hover:before {
+  opacity: 1;
+  visibility: visible;
+}
+.NavbarHamburgerMenu:hover {
+  transform: scale(1.2);
 }

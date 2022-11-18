@@ -142,6 +142,23 @@ router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
 });
 
 router.delete("/delete", isLoggedIn, async (req, res) => {
+
+  // before deleting account grab the current user
+  const user = await User.findById(req.user._id);
+  if(user.friends.length !== 0){
+    // now loop through the user's friend's account
+    for(let i = 0; i < user.friends.length; i++){
+      // grab the friend
+      const friend = await User.findById(user.friends[i]);
+      // now remove current user from friend's friend list
+      friend.friends = friend.friends.filter(
+        (ele) => ele.toString() !== req.user._id
+      );
+      friend.save();
+      console.log("user has been deleted from " + friend._id + "'s friends list");
+    }
+  }
+
   try {
     await User.findByIdAndDelete({ _id: req.user._id })
       .then((req1, res1) => {
@@ -158,7 +175,7 @@ router.delete("/delete", isLoggedIn, async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-  res.send({ created: false });
+  //res.send({ created: false });
   return;
 });
 

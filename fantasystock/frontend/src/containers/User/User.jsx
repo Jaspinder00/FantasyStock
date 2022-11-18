@@ -70,7 +70,7 @@ function User(props) {
             {user.username}
           </h1>
 
-          <h2 className="userIDstring">{`#${user._id}`}</h2>
+          <h2 className="userIDstring">{`ID: ${user._id}`}</h2>
           <p className="userBio">{user.bio}</p>
 
           <input

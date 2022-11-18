@@ -88,9 +88,7 @@ function League() {
         setEditableComment(
           new Array(response.data.commentsection.length).fill(false, 0)
         );
-        setEditComment(
-          response.data.commentsection.reverse().map((ele) => ele.comment)
-        );
+        setEditComment(response.data.commentsection.map((ele) => ele.comment));
         setReply(new Array(response.data.commentsection.length).fill("", 0));
 
         setShow(true);
@@ -232,7 +230,7 @@ function League() {
           <input type="button" value="Join League" onClick={joinLeague} />
         </div>
       )}
-      <h4 className="pl">{`${data.title} Players`}</h4>
+      <h4 className="pl">{`${data.title}'s Players`}</h4>
       <div id="LeagueUsers">
         {show &&
           data.players.map((player, index) => {
