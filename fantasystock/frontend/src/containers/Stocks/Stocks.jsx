@@ -27,24 +27,28 @@ function Stock(props) {
   }, []);
 
   return (
-    <div>
+    <div className="StockPricesContainer">
       {
-        <div>
-          {show
-            ? data.map((ele, index) => (
-                <div className="stockCard" key={`uniqueId${index}`}>
-                  <h1>{String(ele.ticker)}</h1>
-                  <h2>{String(ele.name)}</h2>
-                  <h2>{String(ele.sector)}</h2>
-                  <h2>{String(ele.price)}</h2>
-                </div>
-              ))
-            : skeleArr.map((ele, index) => (
-                <div key={`uniqueId${index}`}>
-                  <SkeletonElement type="div" />
-                </div>
-              ))}
-        </div>
+        <table id="StockPrices">
+          <tbody>
+            {show
+              ? data.map((ele, index) => (
+                  <tr className="StockPriceRow" key={index}>
+                    <td className="StockPriceTicker">{String(ele.ticker)}</td>
+                    <td className="StockPriceName">{String(ele.name)}</td>
+                    <td className="StockPriceSector">{String(ele.sector)}</td>
+                    <td className="StockPricePrice">{String(ele.price)}</td>
+                  </tr>
+                ))
+              : skeleArr.map((ele, index) => (
+                  <tr key={`uniqueId${index}`}>
+                    <td>
+                      <SkeletonElement type="div" />
+                    </td>
+                  </tr>
+                ))}
+          </tbody>
+        </table>
       }
     </div>
   );

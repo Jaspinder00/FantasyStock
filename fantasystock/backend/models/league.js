@@ -11,11 +11,11 @@ const LeagueSchema = new Schema(
       ref: "User",
       required: true,
     },
-    title: { type: String, required: true },
+    title: { type: String, required: true, text: true },
     players: [
       {
         type: {
-          player: { type: Schema.Types.ObjectId, ref: "User", unqiue: true },
+          player: { type: Schema.Types.ObjectId, ref: "User" },
           stocks: [
             {
               ticker: { type: String },
@@ -25,6 +25,7 @@ const LeagueSchema = new Schema(
                 enum: ["long", "short"],
                 default: "long",
               },
+              priceAtTime: { type: Number, default: 0 },
             },
           ],
         },
@@ -37,6 +38,7 @@ const LeagueSchema = new Schema(
     },
     start: { type: Date, required: true },
     end: { type: Date, required: true },
+    active: { type: Boolean, default: true },
     commentsection: [
       {
         comment: {

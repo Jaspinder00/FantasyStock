@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./SearchLeague.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-function SearchLeague() {
+function SearchLeague(props) {
   const [results, setResults] = useState([]);
 
-  useEffect((event) => {
-    axios
-      .get(`/league/search?page=1`)
-      .then((response) => {
-        setResults(response.data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+  const { id } = useParams();
+
+  useEffect(
+    (event) => {
+      // console.log(id);
+      // console.log(props);
+      axios
+        .get(`/league/search?page=1&search=${id}`)
+        .then((response) => {
+          setResults(response.data);
+        })
+        .catch((error) => console.log(error));
+    },
+    [id]
+  );
 
   return (
     <div className="searchResultContainer">

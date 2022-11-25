@@ -13,7 +13,7 @@ function FloatingTab(props) {
     axios
       .post("/register/logout", {})
       .then(function (response) {
-        console.log(response);
+        // console.log(response);
         dispatch(logout());
         window.location.replace("http://localhost:3000");
       })

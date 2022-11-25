@@ -103,9 +103,9 @@ function App() {
             <Route path="/league/create" element={<Unauthorized />} />
           )}
           {loggedIn ? (
-            <Route path="/league/search" element={<SearchLeague />} />
+            <Route path="/league/search/:id" element={<SearchLeague />} />
           ) : (
-            <Route path="/league/search" element={<Unauthorized />} />
+            <Route path="/league/search/:id" element={<Unauthorized />} />
           )}
           {loggedIn ? (
             <Route path="/league/:id" element={<League />} />

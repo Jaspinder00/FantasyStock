@@ -18,12 +18,10 @@
   overflow: hidden;
 }
 .VerticalNavbarIcons1:hover {
-  background-color: var(--main-bg-contrast-color);
-  color: var(--main-font-contrast-color);
+  transform: scale(1.05);
 }
 .VerticalNavbarIcons1:hover .centerIcon {
-  background-color: #00000000;
-  color: var(--main-font-contrast-color);
+  transform: scale(1.05);
 }
 .VerticalNavbarIcons2 {
   padding: 0.25rem;
@@ -43,7 +41,7 @@
   -ms-user-select: none;
 }
 .VerticalNavbarIcons2:hover {
-  color: var(--main-font-contrast-color);
+  transform: scale(1.2);
 }
 
 .centerIcon {
@@ -63,10 +61,6 @@
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-}
-.centerIcon:hover {
-  background-color: var(--main-bg-contrast-color);
-  color: var(--main-font-contrast-color);
 }
 
 .hovertextright {
@@ -122,6 +116,9 @@
   opacity: 1;
   visibility: visible;
 }
+.hovertextbottom:hover {
+  transform: scale(1.2);
+}
 
 .createleague {
   float: right;
@@ -130,7 +127,7 @@
 
 @media (max-width: 991px) {
   .VerticalNavbarIcons1 {
-    min-height: 10vh;
-    font-size: 2rem;
+    min-height: 8vh;
+    font-size: 1.5rem;
   }
 }

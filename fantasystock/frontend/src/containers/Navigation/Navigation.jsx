@@ -40,7 +40,7 @@ function Navigation(props) {
             design="VerticalNavbarIcons1"
           />
           <ClickableIcons
-            to="/stocks"
+            to="/league"
             icon={faFootball}
             name="League"
             design="VerticalNavbarIcons1"
@@ -67,12 +67,6 @@ function Navigation(props) {
             to="/profile"
             icon={faAddressCard}
             name="Profile"
-            design="VerticalNavbarIcons1"
-          />
-          <ClickableIcons
-            to="/messagecenter"
-            icon={faEnvelope}
-            name="Messages"
             design="VerticalNavbarIcons1"
           />
           <ClickableIcons
@@ -125,13 +119,6 @@ function Navigation(props) {
             icon={faAddressCard}
             design="VerticalNavbarIcons2"
             hoverName="Profile"
-            hoverDesign="hovertextright"
-          />
-          <ClickableIcons
-            to="/messagecenter"
-            icon={faEnvelope}
-            design="VerticalNavbarIcons2"
-            hoverName="Messages"
             hoverDesign="hovertextright"
           />
           <ClickableIcons

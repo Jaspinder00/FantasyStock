@@ -13,6 +13,7 @@ Now, you will need to create a '.env' file in the backend directory with all the
 The enviornment varibles needed include: 
 - DB_HOST
 - ALPHA_VANTAGE_KEY
+- NEWS_API_KEY
 - GOOGLE_CLIENT_ID
 - GOOGLE_CLIENT_SECRET
 - PORT
@@ -21,6 +22,7 @@ The enviornment varibles needed include:
 For development purposes:
 - DB_HOST has to be mongodb://localhost:27017/fantasystock to be ran locally
 - ALPHA_VANTAGE_KEY will be what is assigned after signing up to Alpha Vantage https://www.alphavantage.co/
+- NEWS_API_KEY will be what is assigned after signing up to newsapi https://newsapi.org/
 - GOOGLE_CLIENT_ID & GOOGLE_CLIENT_SECRET will be what is assigned after signing up for Google API https://console.cloud.google.com/apis/credentials/oauthclient the Authorized redirect URIs google will ask for should be: http://localhost:5000/register/google/callback
 - PORT has to be port 5000, because of the redirect URI given to google, You can change them both aslong as they match.
 - SESSION_SECERET can be whatever you want.
@@ -28,6 +30,7 @@ For development purposes:
 Example:
 - DB_HOST=mongodb://localhost:27017/fantasystock
 - ALPHA_VANTAGE_KEY=aaaaaaaaaaaaaaaaaaaaaaaa
+- NEWS_API_KEY=aaaaaaaaaaaaaaaaaaaaaaaa
 - GOOGLE_CLIENT_ID=aaaaaaaaaaaaaaaaaaaaaaaa
 - GOOGLE_CLIENT_SECRET=aaaaaaaaaaaaaaaaaaaaaaaa
 - PORT=5000

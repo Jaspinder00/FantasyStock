@@ -16,9 +16,12 @@ const UserSchema = new Schema({
   photo: { type: String, default: "" },
   bio: { type: String, default: "Hello, World!" },
   friends: [{ type: mongoose.Types.ObjectId, ref: "User" }],
-  currency: { type: Number, default: 0 },
+  friendRequests: [{ type: mongoose.Types.ObjectId, ref: "User" }],
+  currency: { type: Number, default: 100000 },
   activeLeagues: [{ type: mongoose.Types.ObjectId, ref: "League" }],
   passedLeagues: [{ type: mongoose.Types.ObjectId, ref: "League" }],
+  icons: { type: [{ type: String }], default: ["crown"] },
+  activeIcon: { type: String, default: "crown" },
 });
 
 UserSchema.plugin(findorCreate);

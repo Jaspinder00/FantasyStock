@@ -60,5 +60,5 @@ module.exports = async () => {
   // const allnews = await News.find({ createdAt: { $lte: oneDayAgo } });
   // console.log(allnews.length);
 
-  News.deleteMany({ createdAt: { $lte: oneDayAgo } });
+  await News.deleteMany({ createdAt: { $lte: oneDayAgo } });
 };

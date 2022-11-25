@@ -1,0 +1,49 @@
+.LeagueCenterMain {
+  /* background-color: red; */
+  width: 90%;
+  margin: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+
+.LeagueCenterLeagues {
+  margin-bottom: 10rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+
+.LeagueCenterLeague {
+  font-size: 1.25rem;
+  width: fit-content;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin: 0.5rem;
+}
+.LeagueCenterLeague:hover {
+  background-color: var(--main-navbar-color);
+  transform: scale(1.0125);
+}
+.aLeagueCenterLeague {
+  text-decoration: none;
+  color: var(--main-font-color);
+}
+
+.aLeagueCenterLeagueLink {
+  text-decoration: none;
+  color: var(--main-font-color);
+}
+.aLeagueCenterLeagueLink:hover .LeagueCenterLeague {
+  background-color: var(--main-navbar-color);
+  transform: scale(1.0125);
+}
+
+.LeagueCenterLeaguesHeader {
+  border-bottom: 1px solid var(--main-line-color);
+}

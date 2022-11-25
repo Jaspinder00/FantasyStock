@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "./CreateLeague.css";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [visibility, setVisibility] = useState("Public");
@@ -14,20 +16,51 @@ function Home() {
   const [stkList, setstkList] = useState([]);
   const [tickers, setTickers] = useState([]);
 
+  const navigate = useNavigate();
+
   const createLeague = () => {
-    axios.post("/league/create", {
-      start,
-      end,
-      title,
-      visibility: visibility.toLowerCase(),
-      stocks: stkList.map((aStock) => {
-        return {
-          stock: aStock.stock,
-          quantity: aStock.quantity,
-          position: aStock.position.toLowerCase(),
-        };
-      }),
-    });
+    const rightnow = new Date();
+    const start1 = new Date(start);
+    const end1 = new Date(end);
+
+    if (
+      title === undefined ||
+      title === "" ||
+      typeof title !== "string" ||
+      stkList.length === 0 ||
+      (visibility.toLowerCase() !== "public" &&
+        visibility.toLowerCase() !== "private") ||
+      start === undefined ||
+      start === "" ||
+      typeof start !== "string" ||
+      end === undefined ||
+      end === "" ||
+      typeof end !== "string" ||
+      start1 <= rightnow ||
+      start1 >= end1
+    ) {
+      // console.log("fill everything out");
+
+      return;
+    }
+    axios
+      .post("/league/create", {
+        start,
+        end,
+        title,
+        visibility: visibility.toLowerCase(),
+        stocks: stkList.map((aStock) => {
+          return {
+            stock: aStock.stock,
+            quantity: aStock.quantity,
+            position: aStock.position.toLowerCase(),
+          };
+        }),
+      })
+      .then((e) => {
+        // console.log(e.data);
+        navigate(`/league/${e.data.leagueID}`);
+      });
   };
 
   useEffect((event) => {
@@ -60,128 +93,106 @@ function Home() {
   };
 
   return (
-    <div>
-      <div>
-        <label htmlFor="clTitle" style={{ fontSize: "1rem", margin: "0 1rem" }}>
-          Title
-        </label>
-        <input
-          id="clTitle"
-          type="textbox"
-          onChange={(e) => {
-            setTitle(e.target.value);
-          }}
-          value={title}
-        />
-      </div>
-      <div>
-        <label
-          htmlFor="visibility"
-          style={{ fontSize: "1rem", margin: "0 1rem" }}
-        >
-          League
-        </label>
-        <select id="visibility" onChange={(e) => setVisibility(e.target.value)}>
-          <option>Public</option>
-          <option>Private</option>
-        </select>
-      </div>
-      <div>
-        <label htmlFor="start" style={{ fontSize: "1rem", margin: "0 1rem" }}>
-          Start
-        </label>
-        <input
-          id="start"
-          type="date"
-          onChange={(e) => {
-            setStart(e.target.value);
-          }}
-          value={start}
-        />
-      </div>
-      <div>
-        <label htmlFor="end" style={{ fontSize: "1rem", margin: "0 1rem" }}>
-          End
-        </label>
-        <input
-          id="end"
-          type="date"
-          onChange={(e) => {
-            setEnd(e.target.value);
-          }}
-          value={end}
-        />
-      </div>
-      <div>
-        <label style={{ fontSize: "1rem", margin: "0 1rem" }}>Stocks</label>
-
-        <div>
-          <label
-            htmlFor="clTicker"
-            style={{ fontSize: "1rem", margin: "0 1rem" }}
-          >
-            Ticker:
-          </label>
+    <div id="CreateLeague">
+      <div id="CL">
+        <div id="CLTitle">
+          <label htmlFor="clTitle">Title</label>
           <input
-            id="clTicker"
-            type="text"
-            list="data"
+            id="clTitle"
+            type="textbox"
             onChange={(e) => {
-              setStk(e.target.value);
+              setTitle(e.target.value);
             }}
-            value={stk}
-            placeholder="Pick a stock"
+            value={title}
           />
-          <datalist id="data">
-            {tickers.map((item, key) => (
-              <option key={key} value={item} />
-            ))}
-          </datalist>
-
-          <label
-            htmlFor="clQuantity"
-            style={{ fontSize: "1rem", margin: "0 1rem" }}
-          >
-            Quantity:
-          </label>
-          <input
-            id="clQuantity"
-            type="number"
-            min="1"
-            max="999"
-            onChange={(e) => {
-              setQnt(e.target.value);
-            }}
-            value={qnt}
-          />
-
-          <label
-            htmlFor="clPosition"
-            style={{ fontSize: "1rem", margin: "0 1rem" }}
-          >
-            Position:
-          </label>
+        </div>
+        <div id="CLVisibility">
+          <label htmlFor="visibility">League</label>
           <select
-            id="clPosition"
-            onChange={(e) => setPos(e.target.value)}
-            value={pos}
+            id="visibility"
+            onChange={(e) => setVisibility(e.target.value)}
           >
-            <option>Long</option>
-            <option>Short</option>
+            <option>Public</option>
+            <option>Private</option>
           </select>
-
+        </div>
+        <div id="CLStart">
+          <label htmlFor="start">Start</label>
           <input
-            type="button"
-            value="Pick"
-            style={{ margin: "0 1rem" }}
-            onClick={stash}
+            id="start"
+            type="date"
+            onChange={(e) => {
+              setStart(e.target.value);
+            }}
+            value={start}
           />
+        </div>
+        <div id="CLEnd">
+          <label htmlFor="end">End</label>
+          <input
+            id="end"
+            type="date"
+            onChange={(e) => {
+              setEnd(e.target.value);
+            }}
+            value={end}
+          />
+        </div>
+      </div>
+      <div id="LeagueJoinStocks">
+        <h4>Stocks</h4>
+        <div>
+          <div id="StockOptSelect">
+            <label htmlFor="clTicker">Ticker:</label>
+            <input
+              id="clTicker"
+              type="text"
+              list="data"
+              onChange={(e) => {
+                setStk(e.target.value);
+              }}
+              value={stk}
+              placeholder="Pick a stock"
+            />
+            <datalist id="data">
+              {tickers.map((item, key) => (
+                <option key={key} value={item} />
+              ))}
+            </datalist>
 
+            <label htmlFor="clQuantity">Quantity:</label>
+            <input
+              id="clQuantity"
+              type="number"
+              min="1"
+              max="999"
+              onChange={(e) => {
+                setQnt(e.target.value);
+              }}
+              value={qnt}
+            />
+
+            <label htmlFor="clPosition">Position:</label>
+            <select
+              id="clPosition"
+              onChange={(e) => setPos(e.target.value)}
+              value={pos}
+            >
+              <option>Long</option>
+              <option>Short</option>
+            </select>
+
+            <input type="button" value="Pick" onClick={stash} />
+          </div>
+        </div>
+        <div id="StockOptList">
+          <h4> My Stocks </h4>
           {stkList.map((aStock, index) => (
-            <div style={{ fontSize: "1rem" }} key={index}>
-              {aStock.stock} {aStock.quantity} {aStock.position}
+            <div className="MyStockOpt" key={index}>
+              <p>
+                {aStock.stock} {aStock.quantity} {aStock.position}
+              </p>
               <input
-                style={{ margin: "0 1rem" }}
                 type="button"
                 value="delete"
                 onClick={() => deleteStk(index)}
@@ -189,9 +200,10 @@ function Home() {
             </div>
           ))}
         </div>
-        <div>
-          <input type="button" value="Create" onClick={createLeague} />
-        </div>
+      </div>
+
+      <div id="CLcreate">
+        <input type="button" value="Create League" onClick={createLeague} />
       </div>
     </div>
   );

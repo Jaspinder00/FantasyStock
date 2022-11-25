@@ -1,3 +1,127 @@
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
 .App {
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
@@ -25,6 +149,13 @@ body {
   --main-font-contrast-color: hsl(0, 0%, 100%);
   --text-shadow-color: hsl(0, 0%, 100%);
 
+  --main-font-placeholder-color: hsl(0, 0%, 30%);
+
+  --main-line-color: black;
+  --main-constrast-line-color: hsl(0, 0%, 56%);
+
+  --main-shadow-box-color: hsla(0, 0%, 0%, 0.025);
+
   --sign-in-btn-color: hsl(193, 95%, 32%);
 
   --floating-tab-color: hsla(0, 0%, 100%, 0.5);
@@ -32,6 +163,13 @@ body {
 
   --search-btn-color: rgb(208, 208, 208);
   --search-btn-contrast-color: rgb(201, 201, 201);
+
+  --main-user-color: hsl(220, 13%, 70%);
+  --main-user-contrast-color: hsl(220, 13%, 75%);
+
+  --main-card-color: hsl(220, 13%, 60%);
+
+  --league-comment-reply-color: rgb(128, 133, 159);
 }
 
 body.light {
@@ -50,6 +188,13 @@ body.light {
   --main-font-contrast-color: hsl(0, 0%, 100%);
   --text-shadow-color: hsl(0, 0%, 100%);
 
+  --main-font-placeholder-color: hsl(0, 0%, 30%);
+
+  --main-line-color: black;
+  --main-constrast-line-color: hsl(0, 0%, 56%);
+
+  --main-shadow-box-color: hsla(0, 0%, 0%, 0.025);
+
   --sign-in-btn-color: hsl(193, 95%, 32%);
 
   --floating-tab-color: hsla(0, 0%, 100%, 0.5);
@@ -57,6 +202,14 @@ body.light {
 
   --search-btn-color: rgb(208, 208, 208);
   --search-btn-contrast-color: rgb(201, 201, 201);
+
+  --main-user-color: hsl(220, 13%, 70%);
+  --main-user-contrast-color: hsl(220, 13%, 75%);
+
+  --main-card-color: hsl(220, 13%, 65%);
+
+  --del-btn-color: rgb(255, 140, 140);
+  --del-btn-contrast-color: rgb(255, 100, 100);
 }
 
 body.dark {
@@ -75,6 +228,13 @@ body.dark {
   --main-font-contrast-color: black;
   --text-shadow-color: black;
 
+  --main-font-placeholder-color: hsl(0, 0%, 70%);
+
+  --main-line-color: white;
+  --main-constrast-line-color: hsl(0, 0%, 44%);
+
+  --main-shadow-box-color: hsla(0, 0%, 100%, 0.025);
+
   --sign-in-btn-color: #61dafb;
 
   --floating-tab-color: rgba(0, 0, 0, 0.5);
@@ -82,6 +242,14 @@ body.dark {
 
   --search-btn-color: rgb(208, 208, 208);
   --search-btn-contrast-color: rgb(201, 201, 201);
+
+  --main-user-color: hsl(220, 13%, 30%);
+  --main-user-contrast-color: hsl(220, 13%, 25%);
+
+  --main-card-color: hsl(220, 13%, 35%);
+
+  --del-btn-color: rgb(255, 140, 140);
+  --del-btn-contrast-color: rgb(255, 100, 100);
 }
 
 .App-header {
@@ -95,8 +263,31 @@ body.dark {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  overflow-x: hidden;
 }
 
 .App-link {
   color: var(--sign-in-btn-color);
+}
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: 0.5rem;
+  scrollbar-color: var(--main-navbar-color) var(--main-constrast-line-color);
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--main-navbar-color);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--main-constrast-line-color);
+  border-radius: 1rem;
+  border: 0.125rem solid var(--main-navbar-color);
 }

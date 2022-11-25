@@ -10,6 +10,8 @@ const schedule = require("node-schedule");
 const Price = require("./routes/price");
 const News = require("./routes/news");
 const League = require("./routes/leagues");
+const Store = require("./routes/store");
+const updateLeagues = require("./utils/updateLeagues");
 const userRoutes = require("./routes/users");
 const createOrUpdateStocks = require("./utils/createOrUpdateStock");
 const updateNews = require("./utils/updateNews");
@@ -57,6 +59,7 @@ app.use("/register", userRoutes);
 app.use("/price", Price);
 app.use("/news", News);
 app.use("/league", League);
+app.use("/store", Store);
 
 app.get("/", (req, res) => res.send("Hi"));
 
@@ -67,4 +70,7 @@ app.listen(process.env.PORT, () =>
 schedule.scheduleJob("0 */4 * * *", function () {
   createOrUpdateStocks();
   updateNews();
+  updateLeagues();
 });
+
+updateLeagues();

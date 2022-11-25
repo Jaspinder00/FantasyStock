@@ -12,6 +12,8 @@ import { ReactComponent as Microsoft } from "../../assets/microsoft.svg";
 import { ReactComponent as Nvidia } from "../../assets/nvidia.svg";
 import { ReactComponent as Tesla } from "../../assets/tesla.svg";
 import "./User.css";
+import { useNavigate } from "react-router-dom";
+import InlineUser from "../../components/InlineUser/InlineUser";
 
 function User(props) {
   const iconCollection = [
@@ -30,12 +32,19 @@ function User(props) {
   const { id } = useParams();
   const [user, setUser] = useState();
   const [show, setShow] = useState(false);
+  const [isFriend, setIsFriend] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect((event) => {
     axios
       .get(`/register/${id}`)
       .then((response) => {
-        setUser(response.data);
+        if (!response.data.success) {
+          navigate(`/friends`);
+        }
+        setUser(response.data._doc);
+        setIsFriend(response.data.isFriend);
         setShow(true);
       })
       .catch((error) => {
@@ -43,6 +52,13 @@ function User(props) {
         console.log(error);
       });
   }, []);
+
+  const addFriend = () => {
+    axios.patch("/register/addfriend", {
+      friendcode: id,
+    });
+    navigate(`/friends`);
+  };
 
   return (
     <div>
@@ -52,13 +68,28 @@ function User(props) {
             <img src={user.photo} referrerPolicy="no-referrer" alt="profile" />
           </div>
 
-          <h1 className="userTitle">
-            {iconCollection.find((ele) => ele.name === "Crown").item}
-            {user.username}
-          </h1>
+          <div>
+            <InlineUser
+              user={user._id}
+              to={`/user/${user._id}`}
+              aAlt={`${user.username}'s Profile`}
+              design="circlePic"
+              aSrc={user.photo}
+              username={user.username}
+            />
+          </div>
 
-          <h2 className="userIDstring">{`#${user._id}`}</h2>
+          <h2 className="userIDstring">{`ID: ${user._id}`}</h2>
           <p className="userBio">{user.bio}</p>
+
+          {!isFriend && (
+            <input
+              className="addFriendBtn"
+              type="button"
+              value="Add Friend :)"
+              onClick={addFriend}
+            />
+          )}
         </div>
       )}
     </div>

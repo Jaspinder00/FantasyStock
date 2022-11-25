@@ -1,7 +1,8 @@
 .articleCard {
-  border: 0.5rem solid black;
+  border: 0.25rem solid black;
   border-radius: 1rem;
-  width: 20rem;
+  /* width: 18.4515rem; */
+  height: 15.875rem;
   font-size: 1rem;
   display: flex;
   flex-direction: column;
@@ -11,19 +12,79 @@
   display: inline-flex;
 }
 
-.articleCardImage {
-  width: 20rem;
+.articleCard:hover .articleCardImage {
+  transform: scale(1.05);
+  z-index: -1000;
+  /* border-radius: 0; */
+}
+.articleCard:hover .articleBody {
+  background-color: var(--main-bg-color);
+}
+
+.articleCardA {
+  width: 100%;
   height: 20rem;
+  overflow: hidden;
+  border-radius: 0.75rem 0.75rem 0 0;
+  display: flex;
+  justify-content: center;
+}
+
+.articleCardImage {
+  width: 100%;
   display: block;
   object-fit: cover;
-  border-radius: 0.5rem 0.5rem 0 0;
+  border-radius: 0.75rem 0.75rem 0 0;
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
   -o-user-drag: none;
-  user-drag: none;
 }
 
-.homePage {
-  margin-top: 2rem;
+.articleHeader {
+  padding: 0.25rem;
+  font-weight: bold;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+
+.articleCreatedAt {
+  font-size: 0.75rem;
+  background-color: var(--card-color);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  margin: 0.125rem;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+#homePage {
+  /* margin-top: 2rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center; */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  grid-gap: 1rem;
+  margin: 1rem;
+  width: 90%;
+}
+
+.articleBody {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  background-color: var(--main-navbar-color);
+  border-radius: 0 0 0.75rem 0.75rem;
 }
