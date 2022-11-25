@@ -4,10 +4,12 @@ const Stock = require("../models/stock");
 const user = require("../models/user");
 
 module.exports = async () => {
-  const right_now = new Date();
+  const right_now = new Date(); // const right_now = new Date("2022-11-24T22:04:11.597Z"); // grabs timestamp in UTC format
+  //console.log(right_now); // outputs in UTC format
+  //console.log("Date Time now: " + right_now.toLocaleString()); // outputs in our actual timezone (Date & Time provided)
 
   const updatable_leagues = await League.find({
-    start: { $lte: right_now },
+    end: { $lte: right_now.toLocaleDateString() }, // comparison with local right_now (not the UTC right_now)
     active: true,
   });
 

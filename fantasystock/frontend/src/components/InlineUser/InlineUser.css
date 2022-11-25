@@ -1,10 +1,16 @@
 .iuUsername {
   color: var(--main-font-color);
+  inline-size: auto;
+  /* max-inline-size: 90%; */
+  /* inline-size: max-content;
+  overflow: hidden; */
+  /* inline-size: 150px; */
+  writing-mode: horizontal-tb;
 }
 
 .iuContainer {
   display: inline-flex;
-  background-color: var(--main-user-color);
+  background-color: var(--main-shadow-box-color);
   border-radius: 0.5rem;
   padding: 0 0.75rem;
   margin: 0 1rem;
@@ -22,3 +28,17 @@
   align-items: center;
   align-content: center;
 }
+
+/* @media screen and (max-width: 800px) {
+  .iuUsername {
+    inline-size: max-content;
+    max-inline-size: 16rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .iuUsername {
+    inline-size: max-content;
+    max-inline-size: 4rem;
+  }
+} */

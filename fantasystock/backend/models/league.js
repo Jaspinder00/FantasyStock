@@ -11,7 +11,7 @@ const LeagueSchema = new Schema(
       ref: "User",
       required: true,
     },
-    title: { type: String, required: true },
+    title: { type: String, required: true, text: true },
     players: [
       {
         type: {

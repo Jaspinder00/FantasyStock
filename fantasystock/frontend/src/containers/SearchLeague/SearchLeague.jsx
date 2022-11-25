@@ -10,8 +10,8 @@ function SearchLeague(props) {
 
   useEffect(
     (event) => {
-      console.log(id);
-      console.log(props);
+      // console.log(id);
+      // console.log(props);
       axios
         .get(`/league/search?page=1&search=${id}`)
         .then((response) => {

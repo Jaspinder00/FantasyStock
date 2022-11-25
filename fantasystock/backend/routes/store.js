@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/user");
 const Inventory = require("../data/inventory.js");
 const bodyParser = require("body-parser");
+const inventory = require("../data/inventory.js");
 var jsonParser = bodyParser.json();
 require("dotenv").config();
 
@@ -38,10 +39,13 @@ router.patch("/buy", jsonParser, async (req, res) => {
   host.currency = host.currency - itemThing.price;
   host.icons.push(itemThing.name);
   host.save();
+  res.send({ created: true });
 });
 
 router.get("/", async (req, res) => {
-  res.send(Inventory);
+  const host = await User.findById({ _id: req.user._id });
+  const yourInv = Inventory.filter((ele) => !host.icons.includes(ele.name));
+  res.send({ yourInv, currency: host.currency });
 });
 
 module.exports = router;

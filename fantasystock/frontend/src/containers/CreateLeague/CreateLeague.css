@@ -1,45 +1,45 @@
 #CreateLeague {
-	display: flex;
-	flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 90%;
 }
 
 #CL div {
-	margin: 0.25rem 0;
+  margin: 0.25rem 0;
 }
 
 #CL label {
-	font-size: 1rem; 
-	margin: 0px 1rem;
+  font-size: 1rem;
+  margin: 0px 1rem;
 }
 
-#CL input, #CL select, #CLcreate input {
-	border-width: 0px;
-	border-radius: 0.5rem;
-	padding:  0.5rem;
+#CL input,
+#CL select,
+#CLcreate input {
+  border-width: 0px;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
 }
 
 #CL div {
-	margin: 0.5rem 0;
+  margin: 0.5rem 0;
 }
 
 #CLcreate input[type="button"] {
-	padding:  0.75rem;
-	background-color: rgb(30, 230, 130);
+  padding: 0.75rem;
+  background-color: rgb(30, 230, 130);
 }
 
 #CLcreate input[type="button"]:hover {
-	background-color: rgb(130, 230, 130);
-	transform: scale(1.1);
+  background-color: rgb(130, 230, 130);
+  transform: scale(1.0125);
 }
 
 .dark #CLcreate input[type="button"] {
-	background-color: rgb(200, 230, 150);
+  background-color: rgb(200, 230, 150);
 }
 
 .dark #CLcreate input[type="button"]:hover {
-	background-color: rgb(100, 255, 100);
+  background-color: rgb(100, 255, 100);
 }
-
-
-
-

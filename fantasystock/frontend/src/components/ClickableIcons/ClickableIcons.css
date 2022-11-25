@@ -18,10 +18,10 @@
   overflow: hidden;
 }
 .VerticalNavbarIcons1:hover {
-  transform: scale(1.2);
+  transform: scale(1.05);
 }
 .VerticalNavbarIcons1:hover .centerIcon {
-  transform: scale(1.2);
+  transform: scale(1.05);
 }
 .VerticalNavbarIcons2 {
   padding: 0.25rem;

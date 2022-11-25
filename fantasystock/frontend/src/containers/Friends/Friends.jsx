@@ -47,7 +47,7 @@ function Profile(props) {
   }, []);
 
   const addFriend = () => {
-    console.log(friendcode);
+    // console.log(friendcode);
     axios.patch("/register/addfriend", {
       friendcode: friendcode,
     });
@@ -68,84 +68,92 @@ function Profile(props) {
   };
 
   return (
-    <div>
-      <input
-        type="textbox"
-        placeholder="Friend Code"
-        onChange={editFriendcode}
-        value={friendcode}
-        className="friendadderbar"
-      />
-      <input
-        className="friendbaradderbtn"
-        type="button"
-        value="Add Friend"
-        onClick={addFriend}
-      />
-      <div>
-        <h1>Friend Requests</h1>
-        {show &&
-          fr.map((ele, index) => (
-            <div className="friendblock" key={`uniqueId${index}`}>
-              <ClickablePic
-                aSrc={ele.photo}
-                design="circlePic"
-                aAlt={`${ele.username}'s Profile`}
-                to={`/user/${ele._id}`}
-              />
-              <div className="friendusername">{ele.username}</div>
-              <input
-                type="button"
-                className="msgfriend"
-                value="Accept"
-                onClick={() => {
-                  console.log(ele._id);
+    <div className="FriendMainContainer">
+      <div className="FriendInput">
+        <input
+          type="textbox"
+          placeholder="Friend Code"
+          onChange={editFriendcode}
+          value={friendcode}
+          className="friendadderbar"
+        />
+        <input
+          className="friendbaradderbtn"
+          type="button"
+          value="Add Friend"
+          onClick={addFriend}
+        />
+      </div>
 
-                  axios
-                    .patch("/register/friend/request/accept", {
-                      friendcode: ele._id,
-                    })
-                    .then((e) => {
-                      updateData();
-                    });
-                }}
-              />
-              <input
-                type="button"
-                className="unfriendfriend"
-                value="Reject"
-                onClick={() => {
-                  axios
-                    .patch("/register/friend/request/decline", {
-                      friendcode: ele._id,
-                    })
-                    .then((e) => {
-                      updateData();
-                      console.log(e);
-                    });
-                }}
-              />
-            </div>
-          ))}
-        <h1>Friends</h1>
-        {show &&
-          data.map((ele, index) => (
-            <div className="friendblock" key={`uniqueId${index}`}>
-              <ClickablePic
-                aSrc={ele.photo}
-                design="circlePic"
-                aAlt={`${ele.username}'s Profile`}
-                to={`/user/${ele._id}`}
-              />
-              <div className="friendusername">{ele.username}</div>
-              <input
-                type="button"
-                className="unfriendfriend"
-                value="Unfriend"
-                onClick={() => deleteFriend(ele._id)}
-              />
-            </div>
-          ))}
+      <div>
+        <div className="FriendContainer">
+          <h1 className="FriendContainerHeader">Friend Requests</h1>
+          {show &&
+            fr.map((ele, index) => (
+              <div className="friendblock" key={`uniqueId${index}`}>
+                <ClickablePic
+                  aSrc={ele.photo}
+                  design="circlePic"
+                  aAlt={`${ele.username}'s Profile`}
+                  to={`/user/${ele._id}`}
+                />
+                <div className="friendusername">{ele.username}</div>
+                <input
+                  type="button"
+                  className="msgfriend"
+                  value="Accept"
+                  onClick={() => {
+                    // console.log(ele._id);
+
+                    axios
+                      .patch("/register/friend/request/accept", {
+                        friendcode: ele._id,
+                      })
+                      .then((e) => {
+                        updateData();
+                      });
+                  }}
+                />
+                <input
+                  type="button"
+                  className="unfriendfriend"
+                  value="Reject"
+                  onClick={() => {
+                    axios
+                      .patch("/register/friend/request/decline", {
+                        friendcode: ele._id,
+                      })
+                      .then((e) => {
+                        updateData();
+                        console.log(e);
+                      });
+                  }}
+                />
+              </div>
+            ))}
+        </div>
+
+        <div className="FriendContainer">
+          <h1 className="FriendContainerHeader">Friends</h1>
+          {show &&
+            data.map((ele, index) => (
+              <div className="friendblock" key={`uniqueId${index}`}>
+                <ClickablePic
+                  aSrc={ele.photo}
+                  design="circlePic"
+                  aAlt={`${ele.username}'s Profile`}
+                  to={`/user/${ele._id}`}
+                />
+                <div className="friendusername">{ele.username}</div>
+                <input
+                  type="button"
+                  className="unfriendfriend"
+                  value="Unfriend"
+                  onClick={() => deleteFriend(ele._id)}
+                />
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );

@@ -16,6 +16,34 @@ function isLoggedIn(req, res, next) {
 
 router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
   /* DATA VALIDATION COMPLETE */
+  console.log(req.body);
+
+  if (
+    req.body.title === undefined ||
+    req.body.title === "" ||
+    typeof req.body.title !== "string" ||
+    req.body.stocks.length === 0 ||
+    (req.body.visibility !== "public" && req.body.visibility !== "private") ||
+    req.body.start === undefined ||
+    req.body.start === "" ||
+    typeof req.body.start !== "string" ||
+    req.body.end === "" ||
+    req.body.end === undefined ||
+    typeof req.body.end !== "string"
+  ) {
+    res.send({ created1: false });
+    return;
+  }
+
+  try {
+    const rightnow = new Date();
+    const start = new Date(req.body.start);
+    const end = new Date(req.body.end);
+  } catch (e) {
+    console.log(e);
+    res.send({ created1: false });
+    return;
+  }
 
   const rightnow = new Date();
   const start = new Date(req.body.start);
@@ -135,9 +163,18 @@ router.patch("/join", jsonParser, async (req, res) => {
 
   // can not join a league that has already passed
   const rightnow = new Date();
+  //console.log(rightnow);
+  //console.log(rightnow.toLocaleDateString());
   const game = await League.findById(req.body.gameID);
-  if (rightnow > game.end) {
-    console.log("Can not join a league that has expired.");
+  //console.log(game.start);
+  const game_year = game.start.getFullYear();
+  const game_month = game.start.getMonth() + 1;
+  const game_day = game.start.getDate() + 1;
+  const game_full = [game_month, game_day, game_year].join("/");
+  //console.log(game_full);
+  if (rightnow.toLocaleDateString() >= game_full) {
+    // current datetime must be less than the gamestart datetime in order to join a league
+    console.log("Can not join a league that has already started.");
     res.send({ created: false });
     return;
   }
@@ -186,6 +223,22 @@ router.patch("/join", jsonParser, async (req, res) => {
     }
   }
 
+  // now checking that all input stock tickers are actually in our ../data/stocks.js
+  for (let i = 0; i < req.body.stocks.length; i++) {
+    let count = 0;
+    for (let j = 0; j < stocks.length; j++) {
+      if (req.body.stocks[i]["stock"] === stocks[j]["ticker"]) {
+        count++;
+      }
+    }
+    if (count === 0) {
+      console.log("Your requested stock is not allowed.");
+      res.send({ created: false });
+      return;
+    }
+  }
+
+  // if all data validation passed, then proceed to join the league
   const exists = League.exists({ _id: req.body.gameID });
 
   if (exists) {
@@ -195,20 +248,26 @@ router.patch("/join", jsonParser, async (req, res) => {
     }
     const game = await League.findById(req.body.gameID);
 
-    game.players.push({
-      player: req.user._id,
-      stocks: await Promise.all(
-        req.body.stocks.map(async (stockData) => {
-          const price = await Stock.findOne({ ticker: stockData.stock });
-          return {
-            ticker: stockData.stock,
-            quantity: stockData.quantity,
-            position: stockData.position,
-            priceAtTime: price.price,
-          };
-        })
-      ),
-    });
+    try {
+      game.players.push({
+        player: req.user._id,
+        stocks: await Promise.all(
+          req.body.stocks.map(async (stockData) => {
+            const price = await Stock.findOne({ ticker: stockData.stock });
+            return {
+              ticker: stockData.stock,
+              quantity: stockData.quantity,
+              position: stockData.position,
+              priceAtTime: price.price,
+            };
+          })
+        ),
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
+    console.log("Joined league successfully");
     game.save();
     res.send({ success: true });
   }
@@ -228,8 +287,8 @@ router.get("/search", jsonParser, async (req, res) => {
   const rightnow = new Date();
 
   const leagues = await League.find({
+    $text: { $search: req.query.search }, // title: { $regex: req.query.search, $options: "i" }, // replace CSCI with user input
     visibility: "public",
-    title: { $regex: req.query.search, $options: "i" }, // replace CSCI with user input
     end: { $gte: rightnow },
   });
 

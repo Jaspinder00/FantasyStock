@@ -19,6 +19,8 @@ function League() {
 
   const [reply, setReply] = useState([]);
 
+  const [toggleReplies, setToggleReplies] = useState([]);
+
   const [stkList, setstkList] = useState([]);
   const [tickers, setTickers] = useState([]);
 
@@ -60,7 +62,7 @@ function League() {
       .get(`/league/${id}`)
       .then((response) => {
         if (!response.data.success) {
-          console.log(response.data);
+          // console.log(response.data);
           navigate(`/league`);
         }
         setShow(true);
@@ -99,8 +101,13 @@ function League() {
       });
   };
 
+  const updateReplyToggle = () => {
+    setToggleReplies(new Array(reply.length).fill("", false));
+  };
+
   useEffect((event) => {
     updateData();
+    updateReplyToggle();
 
     axios
       .get(`/price/tickers`)
@@ -123,6 +130,7 @@ function League() {
         gameID: id,
       })
       .then((res) => {
+        setstkList([]);
         updateData();
       })
       .catch((e) => console.log(e));
@@ -138,7 +146,7 @@ function League() {
   };
 
   return (
-    <div>
+    <div className="leagueDeetsAll">
       <div id="LeagueDeetsHeader">
         <div className="LeagueTitle">{`${data.title}`}</div>
         <div className="LeagueDeets">
@@ -230,8 +238,8 @@ function League() {
           <input type="button" value="Join League" onClick={joinLeague} />
         </div>
       )}
-      <h4 className="pl">{`${data.title}'s Players`}</h4>
       <div id="LeagueUsers">
+        <h4 className="pl">{`Members`}</h4>
         {show &&
           data.players.map((player, index) => {
             return (
@@ -271,157 +279,200 @@ function League() {
               setComment(e.target.value);
             }}
             placeholder="Leave a Comment"
+            className="leagueCommentTextBox"
           />
-          <input type="button" value="Post Comment" onClick={postComment} />
+          {comment !== "" && (
+            <div className="postCommentContainer">
+              <input type="button" value="Comment" onClick={postComment} />
+            </div>
+          )}
         </div>
-        {show &&
-          data.commentsection.map((data, index) => {
-            return (
-              <div key={index} className="LeagueComment">
-                {show && (
-                  <InlineUser
-                    user={data.owner._id}
-                    to={`/user/${data.owner._id}`}
-                    aAlt={`${data.owner.username}'s Profile`}
-                    design="circlePic"
-                    aSrc={data.owner.photo}
-                    username={data.owner.username}
-                  />
-                )}
-                <div className="LeagueCommentData">{data.comment}</div>
+        <div className="leagueCommentWrapper">
+          {show &&
+            data.commentsection.map((data, index) => {
+              return (
+                <div key={index} className="LeagueComment">
+                  {show && (
+                    <div className="MainLeagueComment">
+                      <InlineUser
+                        user={data.owner._id}
+                        to={`/user/${data.owner._id}`}
+                        aAlt={`${data.owner.username}'s Profile`}
+                        design="circlePic"
+                        aSrc={data.owner.photo}
+                        username={data.owner.username}
+                      />
+                      <div className="LeagueCommentData">{data.comment}</div>
+                    </div>
+                  )}
 
-                {data.isOwner && (
-                  <span className="CommentEditBox">
-                    {editableComment[index] && (
-                      <div className="LeagueCommentEdit">
-                        <textarea
-                          onChange={(e) => {
-                            editComment[index] = data.comment;
-                            const tmpThing = editComment;
-                            tmpThing[index] = e.target.value;
-                            setEditComment([...tmpThing]);
+                  {data.isOwner && (
+                    <span className="CommentEditBox">
+                      {editableComment[index] && (
+                        <div className="LeagueCommentEdit">
+                          <textarea
+                            onChange={(e) => {
+                              editComment[index] = data.comment;
+                              const tmpThing = editComment;
+                              tmpThing[index] = e.target.value;
+                              setEditComment([...tmpThing]);
+                            }}
+                            value={editComment[index]}
+                          />
+                          <input
+                            type="button"
+                            value="Edit Comment"
+                            onClick={() => {
+                              if (editComment[index] === "") return;
+
+                              axios
+                                .patch("/league/comment/edit", {
+                                  gameID: id,
+                                  commentID: data.commentID,
+                                  comment: editComment[index],
+                                })
+                                .then((e) => {
+                                  updateData();
+                                });
+                            }}
+                          />
+                        </div>
+                      )}
+                      <div className="CommentUpdateButtonBox">
+                        <input
+                          type="button"
+                          value="Edit"
+                          onClick={() => {
+                            const tmpThing = editableComment;
+                            tmpThing[index] = !tmpThing[index];
+                            setEditableComment([...tmpThing]);
                           }}
-                          value={editComment[index]}
                         />
                         <input
                           type="button"
-                          value="Edit Comment"
-                          onClick={() => {
-                            if (editComment[index] === "") return;
-
+                          value="Delete"
+                          onClick={() =>
                             axios
-                              .patch("/league/comment/edit", {
+                              .patch("/league/comment/delete", {
                                 gameID: id,
                                 commentID: data.commentID,
-                                comment: editComment[index],
                               })
-                              .then((e) => {
-                                updateData();
-                              });
-                          }}
+                              .then((e) => updateData())
+                          }
                         />
                       </div>
-                    )}
-                    <div className="CommentUpdateButtonBox">
-                      <input
-                        type="button"
-                        value="Edit"
+                    </span>
+                  )}
+
+                  <div className="LeagueCommentReplySectionWrapper">
+                    <div className="LeagueCommentReplySection">
+                      <div
+                        className="LeagueRepliesToggle"
                         onClick={() => {
-                          const tmpThing = editableComment;
+                          const tmpThing = toggleReplies;
                           tmpThing[index] = !tmpThing[index];
-                          setEditableComment([...tmpThing]);
+                          setToggleReplies([...tmpThing]);
                         }}
-                      />
-                      <input
-                        type="button"
-                        value="Delete"
-                        onClick={() =>
-                          axios
-                            .patch("/league/comment/delete", {
-                              gameID: id,
-                              commentID: data.commentID,
-                            })
-                            .then((e) => updateData())
-                        }
-                      />
-                    </div>
-                  </span>
-                )}
+                      >
+                        {toggleReplies[index] ? (
+                          <span className="dropup-caret"></span>
+                        ) : (
+                          <span className="dropdown-caret"></span>
+                        )}{" "}
+                        {data.replies.length}{" "}
+                        {data.replies.length === 1 ? "reply" : "replies"}{" "}
+                      </div>
+                      {toggleReplies[index] && (
+                        <>
+                          {data.replies.map((reply, index) => {
+                            return (
+                              <div key={index} className="LeagueCommentReply">
+                                {show && (
+                                  <InlineUser
+                                    user={reply.replyowner._id}
+                                    to={`/user/${reply.replyowner._id}`}
+                                    aAlt={`${reply.replyowner.username}'s Profile`}
+                                    design="circlePic"
+                                    aSrc={reply.replyowner.photo}
+                                    username={reply.replyowner.username}
+                                  />
+                                )}
+                                <div className="LeagueCommentData">
+                                  {reply.reply}
+                                </div>
 
-                <div className="LeagueCommentReplySection">
-                  <h4>Replies:</h4>
-                  {data.replies.map((reply, index) => {
-                    return (
-                      <div key={index} className="LeagueCommentReply">
-                        {show && (
-                          <InlineUser
-                            user={reply.replyowner._id}
-                            to={`/user/${reply.replyowner._id}`}
-                            aAlt={`${reply.replyowner.username}'s Profile`}
-                            design="circlePic"
-                            aSrc={reply.replyowner.photo}
-                            username={reply.replyowner.username}
-                          />
-                        )}
-                        <div className="LeagueCommentData">{reply.reply}</div>
-
-                        {reply.isOwner && (
-                          <span>
-                            {editableComment[index] && (
-                              <div>
+                                {reply.isOwner && (
+                                  <span>
+                                    {editableComment[index] && (
+                                      <div>
+                                        <input
+                                          type="button"
+                                          value="Post Edit"
+                                          onClick={() =>
+                                            axios.patch(
+                                              "/league/comment/edit",
+                                              {
+                                                gameID: id,
+                                                commentID: data.commentID,
+                                                comment: editComment[index],
+                                              }
+                                            )
+                                          }
+                                        />
+                                      </div>
+                                    )}
+                                  </span>
+                                )}
+                              </div>
+                            );
+                          })}
+                          <div className="LeagueCreateCommentReply">
+                            <textarea
+                              onChange={(e) => {
+                                const tmpThing = reply;
+                                tmpThing[index] = e.target.value;
+                                setReply([...tmpThing]);
+                              }}
+                              value={reply[index]}
+                              placeholder="Leave a Reply"
+                              className="leagueReplyTextBox"
+                            />
+                            {reply[index] !== "" && (
+                              <div className="postReplyContainer">
                                 <input
                                   type="button"
-                                  value="Post Edit"
-                                  onClick={() =>
-                                    axios.patch("/league/comment/edit", {
-                                      gameID: id,
-                                      commentID: data.commentID,
-                                      comment: editComment[index],
-                                    })
-                                  }
+                                  value="Reply"
+                                  onClick={() => {
+                                    if (reply[index] === "") return;
+
+                                    axios
+                                      .patch("/league/comment/reply", {
+                                        gameID: id,
+                                        commentID: data.commentID,
+                                        comment: reply[index],
+                                      })
+                                      .then((e) => {
+                                        const tmpThing = reply;
+                                        tmpThing[index] = "";
+                                        setReply([...tmpThing]);
+                                        updateData();
+                                        const tmpThing1 = toggleReplies;
+                                        tmpThing1[index] = true;
+                                        setToggleReplies([...tmpThing1]);
+                                      });
+                                  }}
                                 />
                               </div>
                             )}
-                          </span>
-                        )}
-                      </div>
-                    );
-                  })}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div className="LeagueCreateCommentReply">
-                  <textarea
-                    onChange={(e) => {
-                      const tmpThing = reply;
-                      tmpThing[index] = e.target.value;
-                      setReply([...tmpThing]);
-                    }}
-                    value={reply[index]}
-                    placeholder="Leave a Reply"
-                  />
-                  <input
-                    type="button"
-                    value="Post Reply"
-                    onClick={() => {
-                      if (reply[index] === "") return;
-
-                      axios
-                        .patch("/league/comment/reply", {
-                          gameID: id,
-                          commentID: data.commentID,
-                          comment: reply[index],
-                        })
-                        .then((e) => {
-                          const tmpThing = reply;
-                          tmpThing[index] = "";
-                          setReply([...tmpThing]);
-                          updateData();
-                        });
-                    }}
-                  />
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+        </div>
       </div>
     </div>
   );

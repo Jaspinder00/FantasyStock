@@ -27,15 +27,18 @@ function Store() {
   ];
 
   const [data, setData] = useState([]);
+  const [currency, setCurrency] = useState("");
+  const [currencyMsg, setCurrencyMsg] = useState("");
   const [show, setShow] = useState(false);
 
-  useMemo((event) => {
+  const updateStore = () => {
     axios
       .get("/store")
       .then((response) => {
-        response.data.map((ele, index) =>
-          setData((oldArr) => [...oldArr, ele])
-        );
+        // console.log(response.data);
+        setData(response.data.yourInv);
+        setCurrency(response.data.currency);
+        setCurrencyMsg(response.data.currency);
       })
       .then(() => {
         setShow(true);
@@ -44,31 +47,52 @@ function Store() {
         console.log(error.response.data);
         setShow(false);
       });
+  };
+
+  useMemo((event) => {
+    updateStore();
   }, []);
 
   return (
-    
+    <>
+      <div className="storeCurrency">
+        Currency:{" "}
+        <span style={{ color: currency !== currencyMsg && "orange" }}>
+          {currencyMsg}
+        </span>
+      </div>
       <div className="iconContainer">
-      {data.map((data, index) => (
-        <div className="iconCard" key={`uniqueId${index}`}>
-          {iconCollection.find((ele) => ele.name === data.name).item}
-          <div className="iconName">{data.name}</div>
-          <div className="iconPrice">{data.price}</div>
-          <input
-            type="button"
-            value="Buy"
-            className="iconBuy"
-            onClick={() => {
-              console.log(data.name);
+        {data.map((data, index) => (
+          <div className="iconCard" key={`uniqueId${index}`}>
+            {iconCollection.find((ele) => ele.name === data.name).item}
+            <div className="iconName">{data.name}</div>
+            <div className="iconPrice">{data.price}</div>
+            <input
+              type="button"
+              value="Buy"
+              className="iconBuy"
+              onMouseOver={() => {
+                setCurrencyMsg(`${currency - data.price}`);
+              }}
+              onMouseLeave={() => {
+                setCurrencyMsg(currency);
+              }}
+              onClick={() => {
+                // console.log(data.name);
 
-              axios.patch("/store/buy", {
-                item: data.name,
-              });
-            }}
-          />
-        </div>
-      ))}
-    </div>
+                axios
+                  .patch("/store/buy", {
+                    item: data.name,
+                  })
+                  .then((e) => {
+                    updateStore();
+                  });
+              }}
+            />
+          </div>
+        ))}
+      </div>
+    </>
   );
 }
 export default Store;

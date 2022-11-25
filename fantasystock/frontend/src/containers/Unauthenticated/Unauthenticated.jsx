@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SigninBtn from "../../components/SigninBtn/SigninBtn";
+import "./Unauthenticated.css";
 
 function Stock(props) {
   return (
-    <div>
-      <h1>Welcome to FantasyStock!</h1>
+    <div className="unauthContainer">
+      <h1 className="unauthH1">FantasyStock</h1>
       <SigninBtn />
     </div>
   );

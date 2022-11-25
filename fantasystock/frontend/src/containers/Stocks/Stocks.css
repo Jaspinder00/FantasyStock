@@ -1,10 +1,49 @@
 #StockPrices {
+  display: table;
+  width: 100%;
+
+  border-spacing: 0 1rem;
+  border-collapse: separate;
+}
+
+.StockPriceRow:hover {
+  background-color: var(--main-navbar-color);
+  transform: scale(1.0125);
+}
+
+.StockPriceRow > td {
+  text-align: left;
+  padding: 1rem;
+}
+
+.StockPriceRow > td:first-child {
+  border-top-left-radius: 0.5rem;
+}
+.StockPriceRow > td:last-child {
+  border-top-right-radius: 0.5rem;
+}
+
+.StockPriceRow > td:first-child {
+  border-bottom-left-radius: 0.5rem;
+}
+.StockPriceRow > td:last-child {
+  border-bottom-right-radius: 0.5rem;
+}
+
+.StockPriceRow > td:nth-child(4) {
+  text-align: right;
+}
+
+#StockPrices > div {
   display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    align-content: flex-start;
-    justify-content: center;
-    align-items: flex-start;
+}
+
+#StockPrices > div:nth-child(4n) {
+  justify-content: flex-end;
+}
+
+.StockPricesContainer {
+  width: 90%;
 }
 
 .stockCard {
@@ -15,22 +54,31 @@
   width: 13rem;
 }
 
-.stockCard h1 {
-  font-size: 2rem;
-  font-weight: bold;
-}
-
 .StockPriceName {
-  font-size: 1.25rem;
-  padding:0.25rem;
+  font-size: 1rem;
 }
 
 .StockPriceSector {
-  font-size: 0.75rem;
-  padding:0.5rem;
+  font-size: 1rem;
   font-style: italic;
 }
 
 .StockPricePrice {
+  font-size: 1.25rem;
+}
+
+.StockPriceTicker {
   font-size: 1.5rem;
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  .StockPriceRow > td:nth-child(2),
+  .StockPriceRow > td:nth-child(3) {
+    display: none;
+  }
+
+  #StockPrices {
+    padding: 0 3rem;
+  }
 }
