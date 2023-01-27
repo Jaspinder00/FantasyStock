@@ -105,6 +105,10 @@ router.get(
 router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
   const user = await User.findById(req.user._id);
 
+  // first trim username & bio inputs to get rid of whitespace
+  req.body.username = req.body.username.trim();
+  req.body.bio = req.body.bio.trim();
+
   // data validation for 'username', 'bio', and 'activeIcon' attributes
   if (
     req.body.username === undefined || // username must be defined

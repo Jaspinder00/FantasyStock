@@ -6,8 +6,6 @@ const League = require("../models/league");
 const Stock = require("../models/stock");
 const User = require("../models/user");
 var jsonParser = bodyParser.json();
-
-// used in create route
 const stocks = require("../data/stocks");
 
 function isLoggedIn(req, res, next) {
@@ -15,23 +13,26 @@ function isLoggedIn(req, res, next) {
 }
 
 router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
-
-  console.log(req.body);
+  // first trim the title for whitespace
+  req.body.title = req.body.title.trim();
 
   // basic data validation
-  if (req.body.title === undefined ||
-      req.body.title === "" ||
-      typeof req.body.title !== "string" ||
-      (req.body.visibility !== "public" && req.body.visibility !== "private") ||
-      req.body.start === undefined ||
-      req.body.start === "" ||
-      typeof req.body.start !== "string" ||
-      req.body.end === undefined ||
-      req.body.end === "" ||
-      typeof req.body.end !== "string" || 
-      req.body.stocks.length === 0)
-  {
-    console.log("Possible errors in 'Title', 'League', 'Start', 'End', or 'Stocks length'.");
+  if (
+    req.body.title === undefined ||
+    req.body.title === "" ||
+    typeof req.body.title !== "string" ||
+    (req.body.visibility !== "public" && req.body.visibility !== "private") ||
+    req.body.start === undefined ||
+    req.body.start === "" ||
+    typeof req.body.start !== "string" ||
+    req.body.end === undefined ||
+    req.body.end === "" ||
+    typeof req.body.end !== "string" ||
+    req.body.stocks.length === 0
+  ) {
+    console.log(
+      "Possible errors in 'Title', 'League', 'Start', 'End', or 'Stocks length'."
+    );
     res.send({ created: false });
     return;
   }
@@ -52,14 +53,19 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
   for (let i = 0; i < req.body.stocks.length; i++) {
     if (typeof req.body.stocks[i]["quantity"] !== "number") {
       // if the quantity is empty do not allow league creation
-      if (req.body.stocks[i]["quantity"] === "" || req.body.stocks[i]["quantity"] === undefined){
+      if (
+        req.body.stocks[i]["quantity"] === "" ||
+        req.body.stocks[i]["quantity"] === undefined
+      ) {
         console.log("Stock quantity must have a value.");
         res.send({ created: false });
         return;
       }
       // else convert the string to int
-      else{
-        req.body.stocks[i]["quantity"] = parseInt(req.body.stocks[i]["quantity"]);
+      else {
+        req.body.stocks[i]["quantity"] = parseInt(
+          req.body.stocks[i]["quantity"]
+        );
       }
     }
   }
@@ -70,7 +76,7 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
   const end = new Date(req.body.end);
 
   // date validation done here
-  if (start <= rightnow || start >= end){
+  if (start <= rightnow || start >= end) {
     console.log("Possible errors with selected 'Start' or 'End'.");
     res.send({ created: false });
     return;
@@ -85,15 +91,21 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
     }
     // now check the stocks input array (size can vary, need to check every possibility)
     for (let i = 0; i < req.body.stocks.length; i++) {
-      if (typeof req.body.stocks[i]["stock"] !== "string" ||
-          req.body.stocks[i]["stock"] === "" ||
-          req.body.stocks[i]["stock"] === undefined ||
-          typeof req.body.stocks[i]["quantity"] !== "number" ||
-          req.body.stocks[i]["quantity"] > 10000 ||
-          req.body.stocks[i]["quantity"] <= 0 ||
-          (req.body.stocks[i]["position"] !== "long" && req.body.stocks[i]["position"] !== "short")) 
-      {
-        console.log("Possible errors in Stocks 'Ticker', 'Quantity', or 'Position'.");
+      // next trim each stock name for whitespace
+      req.body.stocks[i]["stock"] = req.body.stocks[i]["stock"].trim();
+      if (
+        typeof req.body.stocks[i]["stock"] !== "string" ||
+        req.body.stocks[i]["stock"] === "" ||
+        req.body.stocks[i]["stock"] === undefined ||
+        typeof req.body.stocks[i]["quantity"] !== "number" ||
+        req.body.stocks[i]["quantity"] > 10000 ||
+        req.body.stocks[i]["quantity"] <= 0 ||
+        (req.body.stocks[i]["position"] !== "long" &&
+          req.body.stocks[i]["position"] !== "short")
+      ) {
+        console.log(
+          "Possible errors in Stocks 'Ticker', 'Quantity', or 'Position'."
+        );
         res.send({ created: false });
         return;
       }
@@ -101,10 +113,11 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
   }
 
   // lastly checking that all input stock tickers are actually in our ../data/stocks.js
-  for (let i = 0; i < req.body.stocks.length; i++){
+  for (let i = 0; i < req.body.stocks.length; i++) {
     let count = 0;
     for (let j = 0; j < stocks.length; j++) {
-      if (req.body.stocks[i]["stock"] === stocks[j]["ticker"]) {
+      if (req.body.stocks[i]["stock"].toUpperCase() === stocks[j]["ticker"]) {
+        req.body.stocks[i]["stock"] = req.body.stocks[i]["stock"].toUpperCase();
         count++;
       }
     }
@@ -152,7 +165,6 @@ router.post("/create", isLoggedIn, jsonParser, async (req, res) => {
 });
 
 router.patch("/join", jsonParser, async (req, res) => {
-
   // host represents the user instance from the MongoDB that is currently trying to join
   const host = await User.findById({ _id: req.user._id });
   // grabs data the activeLeagues of the user that is currently trying to join
@@ -170,7 +182,7 @@ router.patch("/join", jsonParser, async (req, res) => {
   const game_day = game.start.getDate() + 1;
   const game_full = [game_month, game_day, game_year].join("/");
   //console.log(game_full);
-  if (rightnow.toLocaleDateString() >= game_full) {
+  if (rightnow >= game_full) {
     // current datetime must be less than the gamestart datetime in order to join a league
     console.log("Can not join a league that has already started.");
     res.send({ joined: false });
@@ -184,29 +196,36 @@ router.patch("/join", jsonParser, async (req, res) => {
     for (let i = 0; i < req.body.stocks.length; i++) {
       if (typeof req.body.stocks[i]["quantity"] !== "number") {
         // if the quantity is empty do not allow league creation
-        if (req.body.stocks[i]["quantity"] === "" || req.body.stocks[i]["quantity"] === undefined){
+        if (
+          req.body.stocks[i]["quantity"] === "" ||
+          req.body.stocks[i]["quantity"] === undefined
+        ) {
           console.log("Stock quantity must have a value.");
           res.send({ joined: false });
           return;
         }
         // else convert the string to int
-        else{
-          req.body.stocks[i]["quantity"] = parseInt(req.body.stocks[i]["quantity"]);
+        else {
+          req.body.stocks[i]["quantity"] = parseInt(
+            req.body.stocks[i]["quantity"]
+          );
         }
       }
     }
   }
 
   // basic data validation
-  if (req.body.gameID === undefined ||
-      in_league ||
-      req.body.stocks.length === 0) 
-  {
-    console.log("Possible errors with Stocks length or user already being in league or league not defined.");
+  if (
+    req.body.gameID === undefined ||
+    in_league ||
+    req.body.stocks.length === 0
+  ) {
+    console.log(
+      "Possible errors with Stocks length or user already being in league or league not defined."
+    );
     res.send({ joined: false });
     return;
-  } 
-  else {
+  } else {
     // if the length of the stocks is over 1000 => not allowed
     if (req.body.stocks.length > 1000) {
       console.log("Can not join due to amount of stocks over 1000.");
@@ -215,15 +234,21 @@ router.patch("/join", jsonParser, async (req, res) => {
     }
     // now check the stocks input array (size can vary, need to check every possibility)
     for (let i = 0; i < req.body.stocks.length; i++) {
-      if (typeof req.body.stocks[i]["stock"] !== "string" ||
-          req.body.stocks[i]["stock"] === "" ||
-          req.body.stocks[i]["stock"] === undefined ||
-          typeof req.body.stocks[i]["quantity"] !== "number" ||
-          req.body.stocks[i]["quantity"] > 10000 ||
-          req.body.stocks[i]["quantity"] <= 0 ||
-          (req.body.stocks[i]["position"] !== "long" && req.body.stocks[i]["position"] !== "short")) 
-      {
-        console.log("Possible errors in Stocks 'Ticker', 'Quantity', or 'Position'.");
+      // next trim each stock name for whitespace
+      req.body.stocks[i]["stock"] = req.body.stocks[i]["stock"].trim();
+      if (
+        typeof req.body.stocks[i]["stock"] !== "string" ||
+        req.body.stocks[i]["stock"] === "" ||
+        req.body.stocks[i]["stock"] === undefined ||
+        typeof req.body.stocks[i]["quantity"] !== "number" ||
+        req.body.stocks[i]["quantity"] > 10000 ||
+        req.body.stocks[i]["quantity"] <= 0 ||
+        (req.body.stocks[i]["position"] !== "long" &&
+          req.body.stocks[i]["position"] !== "short")
+      ) {
+        console.log(
+          "Possible errors in Stocks 'Ticker', 'Quantity', or 'Position'."
+        );
         res.send({ joined: false });
         return;
       }
@@ -231,10 +256,11 @@ router.patch("/join", jsonParser, async (req, res) => {
   }
 
   // lastly checking that all input stock tickers are actually in our ../data/stocks.js
-  for (let i = 0; i < req.body.stocks.length; i++){
+  for (let i = 0; i < req.body.stocks.length; i++) {
     let count = 0;
     for (let j = 0; j < stocks.length; j++) {
-      if (req.body.stocks[i]["stock"] === stocks[j]["ticker"]) {
+      if (req.body.stocks[i]["stock"].toUpperCase() === stocks[j]["ticker"]) {
+        req.body.stocks[i]["stock"] = req.body.stocks[i]["stock"].toUpperCase();
         count++;
       }
     }
@@ -305,7 +331,6 @@ router.get("/search", jsonParser, async (req, res) => {
 });
 
 router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
-
   // example of data being passed in: { gameID: '6362048f2b550520a6697db5', comment: 'hello' }
   //console.log(req.body);
 
@@ -315,24 +340,29 @@ router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
   const user = await User.findById(req.user._id);
   // check if the current user is in the league
   $in_league = false;
-  for(let i = 0; i < league.players.length; i++){
-    if(JSON.stringify(league.players[i].player) === JSON.stringify(user._id)){
+  for (let i = 0; i < league.players.length; i++) {
+    if (JSON.stringify(league.players[i].player) === JSON.stringify(user._id)) {
       $in_league = true;
     }
   }
-  if(!$in_league){
+  if (!$in_league) {
     console.log("You are not in the league so you can't comment.");
     res.send({ created: false });
     return;
   }
 
+  // trim the user comment for whitespace
+  req.body.comment = req.body.comment.trim();
+
   // data validation
-  if (req.body.gameID === undefined || // gameID must be defined
-      req.body.comment === undefined || // comment must be defined
-      typeof req.body.comment !== "string" || // comment must be of type string
-      req.body.comment === "" || // comment must not be empty
-      req.body.comment.length > 200) // comment chars must be less than or equal to 200
- {
+  if (
+    req.body.gameID === undefined || // gameID must be defined
+    req.body.comment === undefined || // comment must be defined
+    typeof req.body.comment !== "string" || // comment must be of type string
+    req.body.comment === "" || // comment must not be empty
+    req.body.comment.length > 200
+  ) {
+    // comment chars must be less than or equal to 200
     // comment can not be blank
     console.log("post comment failed");
     res.send({ created: false });
@@ -363,7 +393,8 @@ router.patch("/comment", isLoggedIn, jsonParser, async (req, res) => {
 });
 
 router.patch("/comment/edit", jsonParser, async (req, res) => {
-  /* DATA VALIDATION COMPLETE */
+  // trim the user comment for whitespace
+  req.body.comment = req.body.comment.trim();
 
   // check to make sure data is valid
   if (
@@ -397,8 +428,6 @@ router.patch("/comment/edit", jsonParser, async (req, res) => {
 });
 
 router.patch("/comment/delete", isLoggedIn, jsonParser, async (req, res) => {
-  /* DATA VALIDATION COMPLETE */
-
   // check gameID & commentID are defined (means user can only delete their own comment)
   if (req.body.gameID === undefined || req.body.commentID === undefined) {
     console.log(
@@ -424,23 +453,25 @@ router.patch("/comment/delete", isLoggedIn, jsonParser, async (req, res) => {
 });
 
 router.patch("/comment/reply", isLoggedIn, jsonParser, async (req, res) => {
-
   // grab the current league
   const league = await League.findById(req.body.gameID);
   // grab the current user
   const user = await User.findById(req.user._id);
   // check if the current user is in the league
   $in_league = false;
-  for(let i = 0; i < league.players.length; i++){
-    if(JSON.stringify(league.players[i].player) === JSON.stringify(user._id)){
+  for (let i = 0; i < league.players.length; i++) {
+    if (JSON.stringify(league.players[i].player) === JSON.stringify(user._id)) {
       $in_league = true;
     }
   }
-  if(!$in_league){
+  if (!$in_league) {
     console.log("You are not in the league so you can't reply.");
     res.send({ created: false });
     return;
   }
+
+  // trim the user comment for whitespace
+  req.body.comment = req.body.comment.trim();
 
   // check to make sure data is valid
   if (
