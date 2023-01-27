@@ -105,6 +105,10 @@ router.get(
 router.patch("/edit", isLoggedIn, jsonParser, async (req, res) => {
   const user = await User.findById(req.user._id);
 
+  // first trim username & bio inputs to get rid of whitespace
+  req.body.username = req.body.username.trim();
+  req.body.bio = req.body.bio.trim();
+
   // data validation for 'username', 'bio', and 'activeIcon' attributes
   if (
     req.body.username === undefined || // username must be defined
@@ -452,26 +456,33 @@ router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
 
   // more input data validation
   try {
-    // user1 can not send a friend request to user2 if user2 has already sent a friend request to user1
-    if (req.user.friendRequests.includes(req.body.friendcode)) {
-      console.log("You can not send this user a friend request because they already sent you one.");
+    // grab the current user
+    const user = await User.findById(req.user._id);
+    // grab the friend by friendcode
+    const friend = await User.findById(req.body.friendcode);
+
+    // 1
+    // user1 can not send a friend request to user2 if user1 has already received a friend request from user2
+    // user1 can not send a friend request to user2 if user2 has already received a friend request from user1
+    if (user.friendRequests.includes(friend._id) || 
+        friend.friendRequests.includes(user._id))
+    {
+      console.log("Could not send friend request, either you have a pending friend request from them or they have a pending friend request from you.");
       res.send({ created: false});
       return;
     }
-    const friend = await User.findById(req.body.friendcode);
-    // user1 can not send a friend request to user2 if user1 has already sent a friend request to user2
-    if (friend.friendRequests.includes(req.user._id)) {
-      console.log("You have already sent this user a friend request.");
-      res.send({ created: false });
-      return;
-    }
+
+    // 2
     // user1 can not send a friend request to user2 if user1 is already friends with user2
-    if (friend.friends.includes(req.user._id)) {
-      console.log("This user is already your friend.");
+    if (user.friends.includes(friend._id) ||
+        friend.friends.includes(user._id))
+    {
+      console.log("Could not send friend request, you are already friends with this user.");
       res.send({ created: false });
       return;
     }
-  } catch (e) {
+  } 
+  catch (e) {
     console.log(e);
     res.send({ created: false });
     return;
@@ -479,18 +490,19 @@ router.patch("/addfriend", isLoggedIn, jsonParser, async (req, res) => {
 
   // data validation is successful
   try {
-    //console.log(req.user._id);
-    //console.log(req.body.friendcode);
     const user = await User.findById(req.user._id);
     const friend = await User.findById(req.body.friendcode);
-    //console.log(user);
-    //console.log(friend);
 
     friend.friendRequests.push(user);
     friend.save();
 
-    console.log("friend request sent");
-  } catch {}
+    console.log("Friend request sent.");
+  }
+  catch (e) {
+    console.log(e);
+    res.send({ created: false });
+    return;
+  }
 });
 
 router.patch("/deletefriend", isLoggedIn, jsonParser, async (req, res) => {

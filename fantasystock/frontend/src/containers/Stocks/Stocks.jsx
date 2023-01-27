@@ -43,7 +43,7 @@ function Stock(props) {
               : skeleArr.map((ele, index) => (
                   <tr key={`uniqueId${index}`}>
                     <td>
-                      <SkeletonElement type="div" />
+                      <SkeletonElement type="trThing" />
                     </td>
                   </tr>
                 ))}
